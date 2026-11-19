@@ -1,0 +1,90 @@
+name: AP Weather Intelligence
+
+# Every 10 minutes: poll official NWS alerts (immediate email on CRITICAL/HIGH) and run
+# whatever is due - 3-hourly forecast cycle, daily report (6:30 AM CT), weekly outlook
+# (Mondays 7:00 AM CT), content opportunities, retries, maintenance, dashboard build.
+# Missed or delayed scheduled runs are caught up automatically on the next run.
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Force jobs now (comma list: cycle,daily,weekly,dashboard)"
+        required: false
+        default: ""
+      test_email:
+        description: "Also send a delivery test email"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: apwx-state
+  cancel-in-progress: false
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      dashboard: ${{ steps.run.outputs.dashboard }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      APWX_STATE_DIR: ${{ github.workspace }}/state
+      ALERT_RECIPIENT: ${{ secrets.ALERT_RECIPIENT }}
+      EMAIL_PROVIDER: ${{ secrets.EMAIL_PROVIDER }}
+      EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+      EMAIL_FROM_NAME: ${{ vars.EMAIL_FROM_NAME }}
+      SMTP_HOST: ${{ secrets.SMTP_HOST }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      SMTP_SECURITY: ${{ secrets.SMTP_SECURITY }}
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      NWS_USER_AGENT: ${{ vars.NWS_USER_AGENT }}
+      DASHBOARD_URL: ${{ vars.DASHBOARD_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Restore platform state
+        run: python tools/state_store.py restore
+      - name: Run tick
+        id: run
+        run: python -m apwx tick --force "${{ inputs.force }}"
+      - name: Delivery test email
+        if: ${{ inputs.test_email == true }}
+        run: python -m apwx test-email
+      - name: Save platform state
+        if: ${{ always() && (steps.run.outputs.persist == 'true' || inputs.test_email == true) }}
+        run: python tools/state_store.py save
+      - name: Keep the schedule alive (monthly commit)
+        if: ${{ steps.run.outputs.keepalive == 'true' }}
+        run: |
+          date -u +"%Y-%m-%dT%H:%MZ" > .github/keepalive.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/keepalive.txt
+          git commit -m "keepalive: scheduled workflow activity" && git push || echo "keepalive push skipped"
+      - name: Package dashboard
+        if: ${{ steps.run.outputs.dashboard == 'true' }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: state/docs
+
+  deploy-dashboard:
+    needs: tick
+    if: ${{ needs.tick.outputs.dashboard == 'true' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
