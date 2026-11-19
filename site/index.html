@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AP Weather Intelligence</title>
+<meta name="description" content="American Prime agricultural weather intelligence and early warning dashboard">
+<link rel="icon" href="assets/ap-monogram.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+</head>
+<body>
+<header class="top">
+  <img class="logo" src="assets/ap-monogram.svg" alt="American Prime logo">
+  <div class="brand"><b>AMERICAN PRIME</b><span>AP Weather Intelligence</span><small>Agricultural Weather Intelligence &amp; Early Warning</small></div>
+  <div class="status" id="status"><span class="pill">Loading data...</span></div>
+  <button class="toggle" id="theme" title="Toggle light/dark">Theme</button>
+</header>
+<nav class="tabs" id="tabs">
+  <button data-view="overview" class="active">Overview</button>
+  <button data-view="map">Map &amp; counties</button>
+  <button data-view="crops">Crop risk</button>
+  <button data-view="compare">Regional comparison</button>
+  <button data-view="changes">Forecast changes</button>
+  <button data-view="alerts">Alerts</button>
+  <button data-view="reports">Reports</button>
+  <button data-view="content">Content</button>
+  <button data-view="sources">Data sources</button>
+</nav>
+<main>
+  <section class="view active" id="view-overview">
+    <div class="grid kpis" id="kpis"></div>
+    <div class="grid two">
+      <div class="panel"><h2>Risk map <span class="hint">highest risk per monitored county &middot; click a county</span></h2><div class="mapwrap" id="map-overview"></div><div class="legend" id="legend-overview"></div></div>
+      <div class="panel"><h2>Top developments</h2><div id="top-dev"></div><h3>Active events</h3><div id="events-overview"></div></div>
+    </div>
+    <div class="panel" style="margin-top:14px"><h2>Monitored states <span class="hint">click for state detail on the map</span></h2><div class="grid statecards" id="statecards"></div></div>
+  </section>
+  <section class="view" id="view-map">
+    <div class="grid two">
+      <div class="panel">
+        <div class="controls">
+          <label>Layer<select id="layer"></select></label>
+          <label>Crop<select id="crop"><option value="">All crops</option></select></label>
+          <label>State<select id="state"><option value="">All 12 states</option></select></label>
+          <label>Hazard<select id="hazard"><option value="">Any hazard</option></select></label>
+          <label>Find county<input type="search" id="find" placeholder="e.g. Iberia" list="countylist"></label>
+          <datalist id="countylist"></datalist>
+        </div>
+        <div class="mapwrap" id="map-main"></div>
+        <div class="legend" id="legend-main"></div>
+        <p class="small muted">Monitored counties were selected from USDA NASS Cropland Data Layer 2025 acreage (top counties covering 80% of each state's acreage of each crop). Weather is sampled at each county's Census internal point. Gray = not monitored.</p>
+      </div>
+      <div class="panel sidepanel" id="county-panel"><div class="empty">Select a county on the map to see current conditions, forecasts, crop exposure and risk.</div></div>
+    </div>
+  </section>
+  <section class="view" id="view-crops">
+    <div class="panel"><h2>Crop-specific risk matrix <span class="hint">highest level per state and crop &middot; click a cell for the reasoning</span></h2><div id="matrix"></div><div id="matrix-detail" style="margin-top:12px"></div></div>
+    <div class="panel" style="margin-top:14px"><h2>Crop development status</h2><div id="stages"></div></div>
+  </section>
+  <section class="view" id="view-compare">
+    <div class="panel">
+      <div class="controls"><label>Metric<select id="cmp-metric"></select></label></div>
+      <div class="chart" id="cmp-chart"></div>
+      <div id="cmp-table" class="scroll" style="margin-top:10px"></div>
+    </div>
+  </section>
+  <section class="view" id="view-changes">
+    <div class="grid two">
+      <div class="panel">
+        <div class="controls"><label>State<select id="chg-state"></select></label><label>Metric<select id="chg-metric"></select></label><label>County<select id="chg-county"><option value="">State aggregate</option></select></label></div>
+        <div class="chart" id="chg-chart"></div>
+        <p class="small muted">Each point is one forecast cycle (every 3 h). The line shows how the forecast for the coming days evolved, e.g. how the coldest forecast low for the next 7 days changed as new NWS forecasts were issued.</p>
+      </div>
+      <div class="panel"><h2>Event history</h2><div id="event-history"></div></div>
+    </div>
+  </section>
+  <section class="view" id="view-alerts">
+    <div class="panel"><h2>Active official NWS alerts in monitored agricultural counties</h2><div class="controls"><label>Level<select id="al-level"><option value="">All</option><option>CRITICAL</option><option>HIGH</option><option>MODERATE</option><option>INFORMATIONAL</option></select></label><label>State<select id="al-state"><option value="">All</option></select></label></div><div id="alerts-active" class="scroll"></div></div>
+    <div class="grid two" style="margin-top:14px">
+      <div class="panel"><h2>Email log <span class="hint">immediate alerts, daily, weekly and content emails</span></h2><div id="notif" class="scroll"></div></div>
+      <div class="panel"><h2>Alert history (30 days)</h2><div id="alerts-hist" class="scroll"></div><h3>Preliminary storm reports (SPC, 3 days)</h3><div id="storm" class="scroll"></div></div>
+    </div>
+  </section>
+  <section class="view" id="view-reports">
+    <div class="grid two"><div class="panel"><iframe class="report" id="report-frame" title="Report"></iframe></div><div class="panel"><h2>Daily reports and weekly outlooks</h2><div id="report-list" class="scroll"></div></div></div>
+  </section>
+  <section class="view" id="view-content">
+    <div class="panel"><h2>Agricultural content opportunities <span class="hint">generated from verified data; review before posting</span></h2><div id="ideas"></div></div>
+  </section>
+  <section class="view" id="view-sources">
+    <div class="panel"><h2>Data source status</h2><div id="src-table" class="scroll"></div></div>
+    <div class="grid two" style="margin-top:14px"><div class="panel"><h2>Scheduler runs</h2><div id="runs" class="scroll"></div></div><div class="panel"><h2>Delivery configuration</h2><div id="delivery"></div></div></div>
+  </section>
+</main>
+<footer>American Prime &middot; AP Weather Intelligence. Risk levels describe potential crop impacts estimated from official forecasts and observations; they are not confirmed damage. Follow official NWS products for life-safety decisions.</footer>
+<div class="tooltip" id="tooltip"></div>
+<script src="app.js"></script>
+</body>
+</html>

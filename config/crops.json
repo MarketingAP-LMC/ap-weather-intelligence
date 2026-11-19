@@ -1,0 +1,788 @@
+{
+  "version": "2026-11-19",
+  "notes": "Crop knowledge base. Thresholds and stage vulnerabilities come from the evidence table compiled 2026-11-19 (land-grant extension, USDA, Canola Council); source IDs (S01...) map to 'references'. Levels describe WEATHER INTENSITY for the crop; the engine then adjusts for crop exposure (share of the crop in vulnerable phases) and forecast lead time. All values are configurable.",
+  "references": {
+    "S01": {"title": "Field Crops Usual Planting and Harvesting Dates (Oct 2010)", "publisher": "USDA NASS", "year": 2010, "url": "https://esmis.nal.usda.gov/sites/default/release-files/vm40xr56k/dv13zw65p/z603r1055/planting-10-29-2010.txt"},
+    "S10": {"title": "Frost or Freeze Damage to Immature Corn", "publisher": "Purdue University", "year": 2019, "url": "https://agry.purdue.edu/ext/corn/news/timeless/FrostFreezeImmatureCorn.html"},
+    "S11": {"title": "Frost and Cold Injury to Young Corn", "publisher": "Purdue University", "year": 2020, "url": "https://www.agry.purdue.edu/ext/corn/news/timeless/FrostedCorn.html"},
+    "S12": {"title": "Ponding and Flooding Effects on Young Corn", "publisher": "Purdue University", "year": 2025, "url": "https://agry.purdue.edu/ext/corn/news/timeless/pondingyoungcorn.html"},
+    "S13": {"title": "Drought and Heat Stress Effects on Corn Pollination", "publisher": "Purdue University", "url": "https://www.agry.purdue.edu/ext/corn/pubs/corn-07.htm"},
+    "S14": {"title": "Field Drydown of Mature Corn Grain", "publisher": "Purdue University", "year": 2018, "url": "https://www.agry.purdue.edu/ext/corn/news/timeless/GrainDrying.html"},
+    "S15": {"title": "Imbibitional Chilling and Frost Damage to Corn and Soybean Seedlings", "publisher": "Iowa State University", "year": 2014, "url": "https://crops.extension.iastate.edu/cropnews/2014/05/imbibitional-chilling-and-frost-damage-corn-and-soybean-seedlings"},
+    "S16": {"title": "Influence of Drought on Corn and Soybean", "publisher": "Iowa State University", "year": 2017, "url": "https://crops.extension.iastate.edu/cropnews/2017/07/influence-drought-corn-and-soybean"},
+    "S17": {"title": "Corn Pollination: Effect of High Temperature and Stress", "publisher": "Iowa State University", "url": "https://crops.extension.iastate.edu/encyclopedia/corn-pollination-effect-high-temperature-and-stress"},
+    "S18": {"title": "How Extended High Heat Disrupts Corn Pollination", "publisher": "University of Nebraska-Lincoln", "year": 2026, "url": "https://cropwatch.unl.edu/how-extended-high-heat-disrupts-corn-pollination"},
+    "S19": {"title": "Frost/Freeze Effects on Corn and Soybean", "publisher": "University of Nebraska-Lincoln", "year": 2015, "url": "https://cropwatch.unl.edu/frostfreeze-effects-corn-and-soybean"},
+    "S20": {"title": "Effects of Flooding and Ponding on Corn (AGF-118)", "publisher": "Ohio State University Extension", "year": 2017, "url": "https://ohioline.osu.edu/factsheet/agf-118"},
+    "S21": {"title": "Corn and Soybean Survival in Saturated and Flooded Soils", "publisher": "University of Nebraska-Lincoln", "year": 2024, "url": "https://cropwatch.unl.edu/corn-and-soybean-survival-saturated-and-flooded-soils"},
+    "S22": {"title": "Effect of Standing Water and Saturated Soils on Corn", "publisher": "Kansas State University", "year": 2026, "url": "https://www.agronomy.k-state.edu/eupdates/2026/issue-1101-april-30/standing-water-corn-2026.html"},
+    "S23": {"title": "Greensnap", "publisher": "Iowa State University", "year": 2026, "url": "https://crops.extension.iastate.edu/encyclopedia/greensnap"},
+    "S24": {"title": "Wind Injury in Corn", "publisher": "South Dakota State University Extension", "year": 2025, "url": "https://extension.sdstate.edu/wind-injury-corn"},
+    "S25": {"title": "Hail Injury on Corn", "publisher": "Iowa State University", "year": 2009, "url": "https://crops.extension.iastate.edu/cropnews/2009/06/hail-injury-corn"},
+    "S26": {"title": "Evaluating Hail Damage to Corn (EC126)", "publisher": "University of Nebraska-Lincoln", "year": 2011, "url": "https://extensionpubs.unl.edu/publication/ec126/na/pdf/view"},
+    "S27": {"title": "Assessing Storm Damage in Corn: Defoliation, Root Lodging, and Green Snap", "publisher": "Kansas State University", "year": 2026, "url": "https://www.agronomy.k-state.edu/eupdates/2026/issue-1107-june-11/hail-damaged-corn-2026.html"},
+    "S28": {"title": "It's Getting Hot in Here (C.O.R.N. 2022-19)", "publisher": "Ohio State University Extension", "year": 2022, "url": "https://agcrops.osu.edu/newsletter/corn-newsletter/2022-19/it%E2%80%99s-getting-hot-here"},
+    "S29": {"title": "Fall Frost Damage to Field Crops", "publisher": "North Dakota State University", "url": "https://www.ndsu.edu/agriculture/node/339"},
+    "S30": {"title": "Frost Damage to Soybeans", "publisher": "Iowa State University", "year": 2019, "url": "https://crops.extension.iastate.edu/post/frost-damage-soybeans"},
+    "S31": {"title": "Evaluating Hail Damage to Soybeans (EC128)", "publisher": "University of Nebraska-Lincoln", "year": 2011, "url": "https://extensionpubs.unl.edu/publication/ec128/na/pdf/view"},
+    "S32": {"title": "Irrigating Soybean (G1367)", "publisher": "University of Nebraska-Lincoln", "year": 2012, "url": "https://extensionpubs.unl.edu/publication/g1367/na/html/view"},
+    "S33": {"title": "Ponding Impacts on Soybean Growth and Development", "publisher": "Iowa State University", "year": 2026, "url": "https://crops.extension.iastate.edu/encyclopedia/ponding-impacts-soybean-growth-development"},
+    "S34": {"title": "Soybean Response to Standing Water and Saturated Soils", "publisher": "Kansas State University", "year": 2026, "url": "https://www.agronomy.k-state.edu/eupdates/2026/issue-1101-april-30/soybeans-standing-water-saturated-soils-2026.html"},
+    "S35": {"title": "How Do High Temperatures Impact My Soybeans?", "publisher": "NC State Extension", "year": 2020, "url": "https://soybeans.ces.ncsu.edu/2020/07/how-do-high-temperatures-impact-my-soybeans"},
+    "S36": {"title": "Wet Weather Can Affect Soybean Seed Quality at Harvest", "publisher": "Kansas State University", "year": 2026, "url": "https://www.agronomy.k-state.edu/eupdates/2026/issue-1126-october-22/wet-weather-can-affect-soybean-seed-quality-at-harvest.html"},
+    "S37": {"title": "Soybean Production Handbook (C449)", "publisher": "K-State Research and Extension", "url": "https://bookstore.ksre.ksu.edu/pubs/C449.pdf"},
+    "S38": {"title": "Setting Yield in Soybean and Avoiding End-of-Season Plant Stress", "publisher": "University of Nebraska-Lincoln", "year": 2013, "url": "https://cropwatch.unl.edu/setting-yield-soybean-and-avoiding-end-season-plant-stress-unl-cropwatch-aug-23-2013"},
+    "S40": {"title": "Canola Production (A686)", "publisher": "NDSU Extension", "year": 2021, "url": "https://www.ndsu.edu/agriculture/extension/publications/canola-production"},
+    "S41": {"title": "Frost Tolerance of Spring Seeded Canola", "publisher": "North Dakota State University", "url": "https://ndsu.edu/agriculture/node/427"},
+    "S42": {"title": "Effect of Frost on Flowering Canola", "publisher": "North Dakota State University", "url": "https://www.ndsu.edu/agriculture/node/426"},
+    "S43": {"title": "Canola Encyclopedia: Environmental Effects", "publisher": "Canola Council of Canada", "url": "https://www.canolacouncil.org/canola-encyclopedia/plant-establishment/environmental-effects/"},
+    "S44": {"title": "Canola Encyclopedia: Growth Stages", "publisher": "Canola Council of Canada", "url": "https://www.canolacouncil.org/canola-encyclopedia/growth-stages/"},
+    "S45": {"title": "Canola Encyclopedia: Harvest Management", "publisher": "Canola Council of Canada", "url": "https://www.canolacouncil.org/canola-encyclopedia/harvest-management/"},
+    "S46": {"title": "Great Plains Canola Production Handbook (MF2734)", "publisher": "Kansas State University, Oklahoma State University et al.", "year": 2018, "url": "https://bookstore.ksre.ksu.edu/pubs/MF2734.pdf"},
+    "S47": {"title": "Managing Winter Canola in Oklahoma (PSS-2130)", "publisher": "Oklahoma State University Extension", "year": 2017, "url": "https://extension.okstate.edu/fact-sheets/managing-winter-canola-in-oklahoma.html"},
+    "S48": {"title": "Winter Canola: Planting and Early-Season Management", "publisher": "Kansas State University", "year": 2026, "url": "https://www.agronomy.k-state.edu/eupdates/2026/issue-1120-september-10/winter-canola-planting-early-season-management.html"},
+    "S49": {"title": "Winter survival response of canola to meteorological variables (Secchi et al., Agric. For. Meteorol.)", "publisher": "Kansas State University authors", "year": 2021, "url": "https://mesonet.k-state.edu/airtemp/min/hoursbelow/canola.pdf"},
+    "S50": {"title": "Canola Growth and Development (MF3236)", "publisher": "K-State Research and Extension", "year": 2017, "url": "https://bookstore.ksre.ksu.edu/pubs/MF3236.pdf"},
+    "S60": {"title": "Sunflower Production Guide (A1995)", "publisher": "NDSU Extension", "year": 2020, "url": "https://ndsu.edu/agriculture/node/9883"},
+    "S61": {"title": "Sunflower Frost", "publisher": "University of Nebraska-Lincoln", "year": 2008, "url": "https://cropwatch.unl.edu/sunflower-frost/"},
+    "S70": {"title": "Resistance of Louisiana Sugarcane to Deterioration from Freezing Temperatures", "publisher": "LSU AgCenter", "year": 2001, "url": "https://www.lsuagcenter.com/portals/communications/publications/agmag/archive/2001/fall/resistance-of-louisiana-sugarcane-to-deterioration-from-freezing-temperatures"},
+    "S71": {"title": "Best Management Practices Following a Freeze in Sugarcane", "publisher": "LSU AgCenter", "year": 2020, "url": "https://www.lsuagcenter.com/profiles/kgravois/articles/page1491245042217"},
+    "S72": {"title": "Freeze Effect on Cane Being Evaluated", "publisher": "LSU AgCenter", "year": 2019, "url": "https://www.lsuagcenter.com/profiles/jmorgan/articles/page1573768068321"},
+    "S73": {"title": "Sugarcane flood tolerance (Canal Point lysimeter study)", "publisher": "USDA Agricultural Research Service", "year": 2010, "url": "https://www.ars.usda.gov/is/pr/2010/100324.htm"},
+    "S74": {"title": "AgCenter experts surveying hurricane damage to sugarcane, soybeans", "publisher": "LSU AgCenter", "year": 2024, "url": "https://lsuagcenter.com/articles/page1726509733153"},
+    "S75": {"title": "Field Response of Sugarcane Genotypes to Freeze Stress (Edme and Glaz, J. Crop Improvement)", "publisher": "Peer-reviewed (Canal Point, FL)", "year": 2013, "url": "https://agris.fao.org/search/ru/records/65de4cd56eef00c2cea04e3d"},
+    "S76": {"title": "CP 03-1912, A Sugarcane Cultivar Expanding on Sand Soil in Florida (SC111)", "publisher": "UF/IFAS EDIS", "year": 2024, "url": "https://ask.ifas.ufl.edu/publication/SC111"},
+    "S77": {"title": "A tale of two freezes: the impact of snow and frigid temps on the 2025 sugarcane crop", "publisher": "American Sugar Cane League", "year": 2025, "url": "https://www.amscl.org/uncategorized/a-tale-of-two-freezes-the-impact-of-snow-and-frigid-temps-on-the-2025-sugarcane-crop/"},
+    "CPC": {"title": "CPC 6-10 and 8-14 Day Outlooks", "publisher": "NOAA Climate Prediction Center", "url": "https://www.cpc.ncep.noaa.gov/products/predictions/814day/"},
+    "USDM": {"title": "U.S. Drought Monitor", "publisher": "NDMC, USDA, NOAA", "url": "https://droughtmonitor.unl.edu/"},
+    "WPC_ERO": {"title": "WPC Excessive Rainfall Outlook", "publisher": "NOAA Weather Prediction Center", "url": "https://www.wpc.ncep.noaa.gov/qpf/excessive_rainfall_outlook_ero.php"},
+    "SPC": {"title": "SPC Convective Outlooks", "publisher": "NOAA Storm Prediction Center", "url": "https://www.spc.noaa.gov/products/outlook/"}
+  },
+  "crops": {
+    "corn": {
+      "label": "Corn",
+      "presence_acres": 5000,
+      "stage_model": "progress",
+      "nass_sequence": ["planted", "emerged", "silking", "dough", "dented", "mature", "harvested"],
+      "milestone_offsets_days": {"emerged": 10, "silking": 65, "dough": 85, "dented": 98, "mature": 118},
+      "phases": {"not_planted": [null, "planted"], "planted_emerging": ["planted", "emerged"], "vegetative": ["emerged", "silking"],
+                 "reproductive": ["silking", "dented"], "maturing": ["dented", "mature"], "mature_standing": ["mature", "harvested"],
+                 "harvested": ["harvested", null]},
+      "phase_labels": {"not_planted": "not yet planted", "planted_emerging": "planted/emerging", "vegetative": "vegetative",
+                       "reproductive": "silking to dough", "maturing": "dented, before black layer", "mature_standing": "mature, unharvested", "harvested": "harvested"},
+      "calendar_source": "S01",
+      "calendar": {
+        "FL": {"plant": ["03-01", "03-15", "04-25", "05-05"], "harvest": ["07-15", "08-01", "09-10", "10-01"]},
+        "IL": {"plant": ["04-14", "04-21", "05-23", "06-05"], "harvest": ["09-14", "09-23", "11-05", "11-20"]},
+        "IN": {"plant": ["04-20", "05-01", "06-01", "06-10"], "harvest": ["09-15", "10-01", "11-10", "11-25"]},
+        "IA": {"plant": ["04-19", "04-25", "05-18", "05-26"], "harvest": ["09-21", "10-05", "11-09", "11-21"]},
+        "KS": {"plant": ["04-05", "04-15", "05-15", "05-25"], "harvest": ["09-01", "09-10", "10-25", "11-10"]},
+        "LA": {"plant": ["03-13", "03-19", "04-08", "04-16"], "harvest": ["07-31", "08-09", "09-05", "09-12"]},
+        "MN": {"plant": ["04-22", "04-26", "05-19", "05-29"], "harvest": ["09-27", "10-08", "11-08", "11-23"]},
+        "NE": {"plant": ["04-19", "04-27", "05-15", "05-21"], "harvest": ["09-18", "10-04", "11-10", "11-20"]},
+        "ND": {"plant": ["04-26", "05-02", "05-28", "06-04"], "harvest": ["09-28", "10-08", "11-19", "12-06"]},
+        "OH": {"plant": ["04-18", "04-24", "05-24", "05-30"], "harvest": ["09-27", "10-11", "11-20", "12-01"]},
+        "OK": {"plant": ["03-21", "04-02", "05-08", "05-17"], "harvest": ["08-20", "08-29", "10-09", "10-20"]},
+        "SD": {"plant": ["04-26", "05-02", "05-27", "06-10"], "harvest": ["09-24", "10-06", "11-16", "12-03"]}
+      },
+      "hazards": {
+        "freeze": {
+          "phase_weights": {"planted_emerging": 0.3, "vegetative": 0.6, "reproductive": 1.0, "maturing": 0.5, "mature_standing": 0.05},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["tmin7d", "<=", 34]], "lead": "lead_le_36"},
+            {"level": "MODERATE", "all": [["tmin7d", "<=", 32]], "lead": "lead_le_32"},
+            {"level": "HIGH", "all": [["tmin7d", "<=", 28]], "lead": "lead_le_28"},
+            {"level": "CRITICAL", "all": [["run_le_28", ">=", 2], ["lead_le_28", "<=", 48]], "lead": "lead_le_28"}
+          ],
+          "vulnerable": "Most vulnerable before physiological maturity (black layer, R6), especially during grain fill (R4-R5); seedlings are partly protected until about V5-V6 because the growing point is below ground.",
+          "short_term": "Leaf injury shows within 1-3 days. Several hours at or below 32 F, or a short time at 28 F, can kill immature plants; young corn at 28-32 F usually suffers leaf damage only.",
+          "medium_term": "A killing freeze before black layer ends grain fill early; published estimates are roughly 40-55% yield loss at R4-R5 and about 12% at half milkline, with no loss at black layer. Frost-killed corn dries down more slowly.",
+          "implications": "Possible lower yield and test weight, light kernels, slower field drydown and later harvest, and weaker stalks. Corn at black layer is not affected.",
+          "monitor": ["Share of fields not yet at black layer (R6)", "Low-lying field areas, which can run several degrees colder than nearby stations", "Regrowth from the whorl 3-5 days after a spring frost", "Stalk integrity and drydown in frost-killed fields"],
+          "sources": ["S10", "S11", "S15", "S19", "S29"]
+        },
+        "heat": {
+          "phase_weights": {"vegetative": 0.3, "reproductive": 1.0, "maturing": 0.2},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["days_ge_90", ">=", 2]], "lead": "lead_ge_90"},
+            {"level": "MODERATE", "all": [["days_ge_95", ">=", 1]], "lead": "lead_ge_95"},
+            {"level": "HIGH", "all": [["days_ge_95", ">=", 4]], "lead": "lead_ge_95"},
+            {"level": "CRITICAL", "all": [["days_ge_100", ">=", 3]], "lead": "lead_ge_100"}
+          ],
+          "vulnerable": "Pollination (VT-R1) and the two weeks before and after silking.",
+          "short_term": "Temperatures in the mid-90s F and above, especially with low humidity, can dry exposed silks and reduce pollen viability; above 100 F pollen can be killed.",
+          "medium_term": "About four or more hot days during pollination can reduce kernel set (roughly 1% per day in one study with adequate moisture), with larger losses when soils are dry.",
+          "implications": "Fewer kernels per ear and lower yield potential; effects are much larger when heat coincides with drought.",
+          "monitor": ["Share of fields shedding pollen or silking", "Consecutive days at or above 95 F", "Soil moisture and afternoon leaf rolling", "Night temperatures (cool nights reduce stress)"],
+          "sources": ["S13", "S17", "S18", "S28"]
+        },
+        "drought": {
+          "phase_weights": {"planted_emerging": 0.2, "vegetative": 0.6, "reproductive": 1.0, "maturing": 0.5},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["dm_d1", ">=", 50]]},
+            {"level": "MODERATE", "all": [["dm_d2", ">=", 50]]},
+            {"level": "MODERATE", "all": [["dm_d1", ">=", 50], ["dm_chg1", ">=", 20]]},
+            {"level": "HIGH", "all": [["dm_d3", ">=", 50]]}
+          ],
+          "vulnerable": "Highest sensitivity from about two weeks before silking through early grain fill (V12-R2).",
+          "short_term": "Leaf rolling and wilting; estimated yield losses of roughly 3-9% per day of stress around pollination and 2-5% per day in late vegetative stages.",
+          "medium_term": "Fewer kernels per ear (before/at silking) or lighter kernels (grain fill); prolonged drought can force early maturity.",
+          "implications": "Lower yield potential and test weight.",
+          "monitor": ["Drought Monitor category changes week to week", "Observed rainfall over the last 2-4 weeks", "Crop stage relative to silking", "USDA topsoil moisture ratings"],
+          "sources": ["S13", "S16", "S26", "USDM"]
+        },
+        "heavy_rain": {
+          "phase_weights": {"planted_emerging": 1.0, "vegetative": 0.5, "reproductive": 0.3, "maturing": 0.4, "mature_standing": 0.3},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["qpf72", ">=", 1.0]], "lead": "lead_rain1"},
+            {"level": "MODERATE", "all": [["qpf72", ">=", 2.0]], "lead": "lead_rain1"},
+            {"level": "MODERATE", "all": [["ero_max", ">=", 2]], "lead": "lead_ero"},
+            {"level": "HIGH", "all": [["qpf72", ">=", 3.0]], "lead": "lead_rain2"},
+            {"level": "HIGH", "all": [["ero_max", ">=", 3]], "lead": "lead_ero"},
+            {"level": "CRITICAL", "all": [["ero_max", ">=", 4]], "lead": "lead_ero"}
+          ],
+          "vulnerable": "Young corn before V6, when the growing point is at or below the soil surface; ears of dented corn if submerged.",
+          "short_term": "Ponded seedlings generally survive about 4 days when air is below about 77 F but may not survive 24 hours when warmer; soil oxygen is depleted within about 48 hours.",
+          "medium_term": "Stand loss, nitrogen loss and disease can reduce yield (5-32% in published flooding studies); submerged mature ears can develop ear rot.",
+          "implications": "Replant decisions in spring, delayed field operations, possible grain quality issues.",
+          "monitor": ["Hours of standing water in low spots", "Air temperature while fields are ponded", "New leaf growth 3-5 days after water recedes", "Nitrogen loss in saturated soils"],
+          "sources": ["S12", "S20", "S21", "S22", "WPC_ERO"]
+        },
+        "harvest_rain": {
+          "phase_weights": {"maturing": 0.2, "mature_standing": 1.0},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["qpf72", ">=", 0.5]], "lead": "lead_rain05"},
+            {"level": "MODERATE", "all": [["qpf7d", ">=", 1.5]], "lead": "lead_rain05"},
+            {"level": "HIGH", "all": [["qpf7d", ">=", 3.0]], "lead": "lead_rain1"}
+          ],
+          "vulnerable": "Mature corn still standing in the field.",
+          "short_term": "Rain and cool, cloudy days can stop field drydown and delay combining.",
+          "medium_term": "Long delays raise the risk of stalk lodging, ear drop and harvest losses and increase drying costs.",
+          "implications": "Slower harvest progress and higher grain moisture at harvest.",
+          "monitor": ["Harvest progress versus the 5-year average (USDA NASS)", "Days with good drying weather", "Stalk strength in standing fields"],
+          "sources": ["S14", "S10"]
+        },
+        "severe_storm": {
+          "phase_weights": {"planted_emerging": 0.2, "vegetative": 0.6, "reproductive": 1.0, "maturing": 0.6, "mature_standing": 0.4},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["spc_max", ">=", 2]], "lead": "lead_spc"},
+            {"level": "MODERATE", "all": [["spc_max", ">=", 3]], "lead": "lead_spc"},
+            {"level": "MODERATE", "all": [["spc_prob", ">=", 15]], "lead": "lead_spc"},
+            {"level": "HIGH", "all": [["spc_max", ">=", 4]], "lead": "lead_spc"},
+            {"level": "HIGH", "all": [["spc_prob", ">=", 30]], "lead": "lead_spc"},
+            {"level": "CRITICAL", "all": [["spc_max", ">=", 5]], "lead": "lead_spc"}
+          ],
+          "vulnerable": "Late vegetative stages through pollination; before about V6 the growing point is protected and leaf loss rarely affects yield.",
+          "short_term": "Hail can defoliate and bruise stalks; wind can snap stalks (greensnap) during rapid elongation (about V5-V8 and V12 to tassel) or root-lodge plants.",
+          "medium_term": "Insurance loss tables estimate yield loss at 100% defoliation of about 16-51% in mid-vegetative stages and near-total loss at tasseling; early root lodging usually recovers.",
+          "implications": "Yield and quality losses, slower harvest if lodged, possible disease entry through wounds.",
+          "monitor": ["Defoliation and stand counts 7-10 days after a storm", "Greensnap and lodging percentages", "Crop stage at the time of the storm"],
+          "sources": ["S23", "S24", "S25", "S26", "S27", "SPC"]
+        },
+        "high_wind": {
+          "phase_weights": {"planted_emerging": 0.1, "vegetative": 0.6, "reproductive": 0.8, "maturing": 0.5, "mature_standing": 0.6},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["gust72", ">=", 40]], "lead": "lead_gust_40"},
+            {"level": "MODERATE", "all": [["gust72", ">=", 50]], "lead": "lead_gust_50"},
+            {"level": "HIGH", "all": [["gust72", ">=", 58]], "lead": "lead_gust_58"}
+          ],
+          "vulnerable": "Rapid stalk elongation (V12 to tassel) for greensnap; mature corn with weakened stalks for lodging.",
+          "short_term": "Stalk breakage or lodging; frost- or disease-weakened mature stalks are more prone to lodging and ear drop.",
+          "medium_term": "Yield loss roughly proportional to snapped plants (about 0.5-1% per 1% of plants snapped); lodged fields harvest more slowly.",
+          "implications": "Harvest losses and slower combining in lodged fields.",
+          "monitor": ["Share of fields still standing", "Stalk quality before strong wind events", "Lodging after the event"],
+          "sources": ["S23", "S24", "S27", "S10"]
+        },
+        "winter_storm": {
+          "phase_weights": {"maturing": 0.6, "mature_standing": 1.0},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["snow72", ">=", 1]], "lead": "lead_snow1"},
+            {"level": "MODERATE", "all": [["snow72", ">=", 4]], "lead": "lead_snow1"},
+            {"level": "MODERATE", "all": [["ice72", ">=", 0.1]]},
+            {"level": "HIGH", "all": [["snow72", ">=", 8]], "lead": "lead_snow1"},
+            {"level": "HIGH", "all": [["ice72", ">=", 0.25]]}
+          ],
+          "vulnerable": "Corn still standing in the field after maturity.",
+          "short_term": "Snow and ice halt harvest and can push down weakened stalks.",
+          "medium_term": "Prolonged delays increase field losses (lodging, ear drop) and drying costs.",
+          "implications": "Slower harvest completion and potential grain losses.",
+          "monitor": ["Remaining unharvested share (USDA NASS)", "Snow depth and melt timing", "Lodging in standing fields after the storm"],
+          "sources": ["S14", "S10"]
+        },
+        "outlook_wet": {
+          "phase_weights": {"mature_standing": 1.0, "planted_emerging": 0.5},
+          "levels": [{"level": "INFORMATIONAL", "all": [["cpc_p814_above", ">=", 50]]}],
+          "vulnerable": "Unharvested mature corn (harvest delays) or recently planted fields.",
+          "short_term": "Outlook only: a wetter-than-normal signal 8-14 days out, not a rainfall forecast.",
+          "medium_term": "If realized, wetter weeks could slow remaining field work.",
+          "implications": "Field-operations planning.",
+          "monitor": ["Updates to the CPC outlook", "NWS 7-day rainfall forecasts as the period approaches"],
+          "sources": ["CPC"]
+        }
+      }
+    },    "soybeans": {
+      "label": "Soybeans",
+      "presence_acres": 5000,
+      "stage_model": "progress",
+      "nass_sequence": ["planted", "emerged", "blooming", "setting_pods", "dropping_leaves", "harvested"],
+      "milestone_offsets_days": {"emerged": 10, "blooming": 50, "setting_pods": 65, "dropping_leaves": 105},
+      "phases": {"not_planted": [null, "planted"], "planted_emerging": ["planted", "emerged"], "vegetative": ["emerged", "blooming"],
+                 "flowering_podset": ["blooming", "setting_pods"], "seed_fill": ["setting_pods", "dropping_leaves"],
+                 "maturing_standing": ["dropping_leaves", "harvested"], "harvested": ["harvested", null]},
+      "phase_labels": {"not_planted": "not yet planted", "planted_emerging": "planted/emerging", "vegetative": "vegetative",
+                       "flowering_podset": "flowering/pod set", "seed_fill": "pod/seed fill", "maturing_standing": "dropping leaves/mature, unharvested", "harvested": "harvested"},
+      "calendar_source": "S01",
+      "calendar": {
+        "FL": {"plant": ["04-20", "05-01", "06-15", "07-01"], "harvest": ["10-01", "10-15", "11-25", "12-01"]},
+        "IL": {"plant": ["05-02", "05-08", "06-12", "06-24"], "harvest": ["09-19", "09-26", "10-26", "11-07"]},
+        "IN": {"plant": ["05-01", "05-05", "06-10", "06-25"], "harvest": ["09-20", "10-01", "11-01", "11-10"]},
+        "IA": {"plant": ["05-02", "05-08", "06-02", "06-16"], "harvest": ["09-21", "09-28", "10-20", "10-31"]},
+        "KS": {"plant": ["05-05", "05-15", "06-20", "07-01"], "harvest": ["09-20", "10-01", "11-01", "11-15"]},
+        "LA": {"plant": ["04-18", "04-23", "06-04", "06-16"], "harvest": ["08-28", "09-03", "10-25", "10-31"]},
+        "MN": {"plant": ["05-02", "05-08", "06-02", "06-13"], "harvest": ["09-20", "09-27", "10-20", "10-31"]},
+        "NE": {"plant": ["05-05", "05-11", "05-31", "06-08"], "harvest": ["09-23", "09-29", "10-24", "11-02"]},
+        "ND": {"plant": ["05-07", "05-14", "06-03", "06-11"], "harvest": ["09-17", "09-24", "10-21", "11-05"]},
+        "OH": {"plant": ["04-26", "05-03", "05-30", "06-10"], "harvest": ["09-23", "09-30", "10-31", "11-12"]},
+        "OK": {"plant": ["04-15", "04-27", "06-27", "07-09"], "harvest": ["09-09", "09-22", "11-20", "12-01"]},
+        "SD": {"plant": ["05-08", "05-15", "06-11", "06-21"], "harvest": ["09-22", "09-28", "10-24", "11-03"]}
+      },
+      "hazards": {
+        "freeze": {
+          "phase_weights": {"planted_emerging": 0.6, "vegetative": 0.8, "flowering_podset": 1.0, "seed_fill": 1.0, "maturing_standing": 0.1},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["tmin7d", "<=", 34]], "lead": "lead_le_36"},
+            {"level": "MODERATE", "all": [["tmin7d", "<=", 32]], "lead": "lead_le_32"},
+            {"level": "HIGH", "all": [["hrs_le_30", ">=", 4]], "lead": "lead_le_30"},
+            {"level": "HIGH", "all": [["tmin7d", "<=", 28]], "lead": "lead_le_28"},
+            {"level": "CRITICAL", "all": [["run_le_28", ">=", 2], ["lead_le_28", "<=", 48]], "lead": "lead_le_28"}
+          ],
+          "vulnerable": "Before beginning maturity (R7), especially during pod development and seed fill (R3-R6); emerged seedlings are more exposed than corn because the growing point is above ground.",
+          "short_term": "Below 32 F leaves can be damaged; below 30 F for an extended period stems, pods and seeds can be injured; 28 F is considered a killing freeze.",
+          "medium_term": "A killing freeze at R5 can cut yield by up to about half and by roughly 10% at R6; fields with mature-color pods (R7) are minimally affected.",
+          "implications": "Lower yield, green or shriveled seed (a grading damage factor), slower drying and more shatter at harvest.",
+          "monitor": ["Share of fields before R7 (USDA 'dropping leaves')", "Hours below 30 F", "Green seed and moisture readings at harvest"],
+          "sources": ["S15", "S19", "S29", "S30"]
+        },
+        "heat": {
+          "phase_weights": {"vegetative": 0.3, "flowering_podset": 1.0, "seed_fill": 1.0},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["days_ge_90", ">=", 3]], "lead": "lead_ge_90"},
+            {"level": "MODERATE", "all": [["days_ge_95", ">=", 2]], "lead": "lead_ge_95"},
+            {"level": "HIGH", "all": [["days_ge_95", ">=", 4]], "lead": "lead_ge_95"}
+          ],
+          "vulnerable": "Flowering through seed fill (R1-R6).",
+          "short_term": "Several consecutive days above about 85-90 F slow photosynthesis and can cause flower and pod abortion, especially with dry soils.",
+          "medium_term": "Fewer pods and smaller seed; heat can hasten maturity.",
+          "implications": "Lower yield potential; largest when heat and drought coincide. Evidence for soybean heat thresholds is moderate.",
+          "monitor": ["Consecutive days at or above 90-95 F during flowering and pod set", "Soil moisture", "Pod counts after the heat event"],
+          "sources": ["S28", "S35"]
+        },
+        "drought": {
+          "phase_weights": {"vegetative": 0.4, "flowering_podset": 1.0, "seed_fill": 1.0, "maturing_standing": 0.1},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["dm_d1", ">=", 50]]},
+            {"level": "MODERATE", "all": [["dm_d2", ">=", 50]]},
+            {"level": "MODERATE", "all": [["dm_d1", ">=", 50], ["dm_chg1", ">=", 20]]},
+            {"level": "HIGH", "all": [["dm_d3", ">=", 50]]}
+          ],
+          "vulnerable": "Pod development and seed fill (R3-R6).",
+          "short_term": "Peak water use (about 0.3 in per day at R2-R3) means dry spells quickly cause stress.",
+          "medium_term": "Drought at R3-R4 reduces pods and seeds per acre; at R5-R6 it reduces seed size and hastens maturity; pod number can fall by up to about 20%.",
+          "implications": "Lower yield and smaller seed.",
+          "monitor": ["Drought Monitor changes", "Observed rainfall over 2-4 weeks", "Crop stage (R3-R6)"],
+          "sources": ["S16", "S32", "S38", "USDM"]
+        },
+        "heavy_rain": {
+          "phase_weights": {"planted_emerging": 1.0, "vegetative": 0.7, "flowering_podset": 0.6, "seed_fill": 0.4, "maturing_standing": 0.4},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["qpf72", ">=", 1.0]], "lead": "lead_rain1"},
+            {"level": "MODERATE", "all": [["qpf72", ">=", 2.0]], "lead": "lead_rain1"},
+            {"level": "MODERATE", "all": [["ero_max", ">=", 2]], "lead": "lead_ero"},
+            {"level": "HIGH", "all": [["qpf72", ">=", 3.0]], "lead": "lead_rain2"},
+            {"level": "HIGH", "all": [["ero_max", ">=", 3]], "lead": "lead_ero"},
+            {"level": "CRITICAL", "all": [["ero_max", ">=", 4]], "lead": "lead_ero"}
+          ],
+          "vulnerable": "Emerged seedlings and early vegetative plants; waterlogging at R2 costs more than in vegetative stages.",
+          "short_term": "Survival is generally good under 48 hours of flooding and up to about 7 days when air is below 80 F; saturated soils approach zero oxygen in 24-48 hours.",
+          "medium_term": "Short waterlogging (2-3 days) at V2-V4 has reduced yields from 0 to 50% in studies; nodulation suffers after 7-10 days of saturation.",
+          "implications": "Stand loss, replant decisions, yellowing and slower growth.",
+          "monitor": ["Duration of standing water", "Air temperature during flooding", "Stand counts 3-5 days after water recedes"],
+          "sources": ["S21", "S33", "S34", "WPC_ERO"]
+        },
+        "harvest_rain": {
+          "phase_weights": {"seed_fill": 0.1, "maturing_standing": 1.0},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["qpf72", ">=", 0.5]], "lead": "lead_rain05"},
+            {"level": "MODERATE", "all": [["qpf7d", ">=", 1.5]], "lead": "lead_rain05"},
+            {"level": "HIGH", "all": [["qpf7d", ">=", 3.0]], "lead": "lead_rain1"}
+          ],
+          "vulnerable": "Mature soybeans (R8) awaiting harvest.",
+          "short_term": "Rain delays harvest; repeated wetting and drying increases shatter and lowers seed germination.",
+          "medium_term": "Prolonged warm, humid weather favors seed decay fungi and sprouting in the pod.",
+          "implications": "Harvest losses and lower seed quality and grade.",
+          "monitor": ["Harvest progress versus average", "Shatter and pod splitting in standing fields", "Seed moisture (harvest near 13%)"],
+          "sources": ["S36", "S37"]
+        },
+        "severe_storm": {
+          "phase_weights": {"planted_emerging": 0.2, "vegetative": 0.3, "flowering_podset": 0.8, "seed_fill": 1.0, "maturing_standing": 0.5},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["spc_max", ">=", 2]], "lead": "lead_spc"},
+            {"level": "MODERATE", "all": [["spc_max", ">=", 3]], "lead": "lead_spc"},
+            {"level": "MODERATE", "all": [["spc_prob", ">=", 15]], "lead": "lead_spc"},
+            {"level": "HIGH", "all": [["spc_max", ">=", 4]], "lead": "lead_spc"},
+            {"level": "HIGH", "all": [["spc_prob", ">=", 30]], "lead": "lead_spc"},
+            {"level": "CRITICAL", "all": [["spc_max", ">=", 5]], "lead": "lead_spc"}
+          ],
+          "vulnerable": "Reproductive stages, especially R4-R5; leaf loss in vegetative stages has little yield effect.",
+          "short_term": "Hail defoliation and broken stems and pods; wind can shatter pods of mature beans.",
+          "medium_term": "Insurance tables estimate yield loss at 100% defoliation of about 33% at R3 and 75-84% at R5; reproductive stand loss costs about 1% yield per 1% of stand.",
+          "implications": "Yield losses and uneven maturity.",
+          "monitor": ["Defoliation and stand counts after storms", "Node and pod damage", "Crop stage at the time of the storm"],
+          "sources": ["S31", "SPC"]
+        },
+        "high_wind": {
+          "phase_weights": {"seed_fill": 0.3, "maturing_standing": 0.6},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["gust72", ">=", 40]], "lead": "lead_gust_40"},
+            {"level": "MODERATE", "all": [["gust72", ">=", 50]], "lead": "lead_gust_50"},
+            {"level": "HIGH", "all": [["gust72", ">=", 58]], "lead": "lead_gust_58"}
+          ],
+          "vulnerable": "Mature soybeans before harvest.",
+          "short_term": "Pod shatter and lodging in standing mature fields.",
+          "medium_term": "Harvest losses rise the longer mature beans stand in the field.",
+          "implications": "Lower harvested yield.",
+          "monitor": ["Unharvested share", "Shatter after wind events"],
+          "sources": ["S36", "S37"]
+        },
+        "winter_storm": {
+          "phase_weights": {"maturing_standing": 1.0},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["snow72", ">=", 1]], "lead": "lead_snow1"},
+            {"level": "MODERATE", "all": [["snow72", ">=", 4]], "lead": "lead_snow1"},
+            {"level": "HIGH", "all": [["snow72", ">=", 8]], "lead": "lead_snow1"}
+          ],
+          "vulnerable": "Soybeans still standing in the field.",
+          "short_term": "Snow halts harvest and can flatten plants.",
+          "medium_term": "Delays increase shatter and pod losses.",
+          "implications": "Harvest losses for remaining fields.",
+          "monitor": ["Remaining unharvested share (USDA NASS)", "Field conditions after melt"],
+          "sources": ["S36", "S37"]
+        },
+        "outlook_wet": {
+          "phase_weights": {"maturing_standing": 1.0, "planted_emerging": 0.5},
+          "levels": [{"level": "INFORMATIONAL", "all": [["cpc_p814_above", ">=", 50]]}],
+          "vulnerable": "Unharvested mature soybeans or recently planted fields.",
+          "short_term": "Outlook only: a wetter-than-normal signal 8-14 days out, not a rainfall forecast.",
+          "medium_term": "If realized, wetter weeks could slow remaining field work and affect seed quality.",
+          "implications": "Field-operations planning.",
+          "monitor": ["Updates to the CPC outlook"],
+          "sources": ["CPC"]
+        }
+      }
+    },
+    "canola": {
+      "label": "Canola",
+      "presence_acres": 1000,
+      "stage_model": "progress",
+      "stage_model_by_state": {"OK": "winter_canola", "KS": "winter_canola"},
+      "nass_sequence": ["planted", "emerged", "flowering", "pod_fill", "mature", "harvested"],
+      "milestone_offsets_days": {"emerged": 7, "flowering": 45, "pod_fill": 65, "mature": 90},
+      "phases": {"not_planted": [null, "planted"], "planted_emerging": ["planted", "emerged"], "vegetative": ["emerged", "flowering"],
+                 "flowering": ["flowering", "pod_fill"], "pod_fill": ["pod_fill", "mature"], "mature_standing": ["mature", "harvested"],
+                 "harvested": ["harvested", null]},
+      "phase_labels": {"not_planted": "not yet planted", "planted_emerging": "seedling", "vegetative": "rosette/bolting", "flowering": "flowering",
+                       "pod_fill": "pod/seed fill", "mature_standing": "mature or swathed, unharvested", "harvested": "harvested",
+                       "establishment": "fall establishment (rosette)", "dormancy": "winter dormancy (rosette)", "green_up_bolting": "spring green-up/bolting",
+                       "off_season": "between harvest and planting"},
+      "calendar_source": "S01 (OK); S40 and S48 agronomic windows (ND, MN, SD, KS; approximate)",
+      "calendar": {
+        "default": {"plant": ["04-20", "04-25", "05-15", "06-01"], "harvest": ["08-01", "08-10", "09-05", "09-25"]},
+        "OK": {"phase_windows": {"establishment": ["09-10", "11-30"], "dormancy": ["12-01", "02-20"], "green_up_bolting": ["02-21", "03-25"],
+                                 "flowering": ["03-26", "04-25"], "pod_fill": ["04-26", "05-25"], "mature_standing": ["05-26", "06-20"], "off_season": ["06-21", "09-09"]}},
+        "KS": {"phase_windows": {"establishment": ["09-01", "11-30"], "dormancy": ["12-01", "03-01"], "green_up_bolting": ["03-02", "04-01"],
+                                 "flowering": ["04-02", "05-01"], "pod_fill": ["05-02", "06-01"], "mature_standing": ["06-02", "06-30"], "off_season": ["07-01", "08-31"]}}
+      },
+      "hazards": {
+        "freeze": {
+          "phase_weights": {"planted_emerging": 0.5, "vegetative": 0.4, "flowering": 0.6, "pod_fill": 1.0, "mature_standing": 0.2},
+          "phase_weights_by_model": {"winter_canola": {"green_up_bolting": 0.7, "flowering": 1.0, "pod_fill": 0.8, "mature_standing": 0.1}},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["tmin7d", "<=", 34]], "lead": "lead_le_36"},
+            {"level": "MODERATE", "all": [["tmin7d", "<=", 32]], "lead": "lead_le_32"},
+            {"level": "HIGH", "all": [["tmin7d", "<=", 28]], "lead": "lead_le_28"},
+            {"level": "CRITICAL", "all": [["tmin7d", "<=", 22], ["lead_le_22", "<=", 48]], "lead": "lead_le_22"}
+          ],
+          "levels_by_model": {"winter_canola": [
+            {"level": "MODERATE", "all": [["tmin7d", "<=", 28]], "lead": "lead_le_28"},
+            {"level": "HIGH", "all": [["tmin7d", "<=", 25]], "lead": "lead_le_25"},
+            {"level": "CRITICAL", "all": [["run_le_22", ">=", 2], ["lead_le_22", "<=", 48]], "lead": "lead_le_22"}
+          ]},
+          "vulnerable": "Spring canola: seedlings (exposed growing point), flowering and especially seed fill before seed moisture falls below about 20%. Winter canola: flowering and pod set in spring.",
+          "short_term": "Hardened spring-canola seedlings tolerate about 24 F, unhardened plants can die at about 25-27 F, and frost at flowering aborts only open flowers. Winter canola exposed to the mid-20s F at flowering can show aborted flowers, bent racemes and split stems.",
+          "medium_term": "Frost after flowering can cause large yield and grade losses; below about 23 F is generally lethal to high-moisture seed, and frosts near 32 F can leave green seed.",
+          "implications": "Green seed (main grade loss), shriveled seed, delayed maturity, lodging from split stems.",
+          "monitor": ["Plant survival 4-10 days after frost (green growing point)", "Seed color change and seed moisture before a freeze", "Duration of the frost (an all-night light frost can be severe)"],
+          "sources": ["S40", "S41", "S42", "S43", "S45", "S46"]
+        },
+        "extreme_cold": {
+          "phase_weights": {},
+          "phase_weights_by_model": {"winter_canola": {"establishment": 0.5, "dormancy": 1.0, "green_up_bolting": 0.8}},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["tmin7d", "<=", 15]], "lead": "lead_le_15"},
+            {"level": "MODERATE", "all": [["tmin7d", "<=", 10]], "lead": "lead_le_10"},
+            {"level": "HIGH", "all": [["hrs_le_10", ">=", 24]], "lead": "lead_le_10"},
+            {"level": "HIGH", "all": [["tmin7d", "<=", 0]], "lead": "lead_le_0"}
+          ],
+          "vulnerable": "Overwintering winter-canola rosettes, especially small plants (fewer than 3 true leaves), plants with an elevated crown, and plants that lost hardiness during warm spells.",
+          "short_term": "Winter survival is linked to several days with daily mean temperatures between about 5 and 14 F, many freeze-thaw cycles and strong wind chill; no single lethal air temperature is established. Snow cover is not measured by this platform.",
+          "medium_term": "Winterkill reduces stands; leaf loss over winter is acceptable if the crown survives; snow cover insulates plants.",
+          "implications": "Stand loss and possible replant or abandonment decisions in spring.",
+          "monitor": ["Fall plant size (6-8 true leaves with the crown near the soil surface is optimal)", "Snow cover during cold outbreaks", "Crown survival once average temperatures rise above about 40 F"],
+          "sources": ["S46", "S47", "S49", "S50"]
+        },
+        "heat": {
+          "phase_weights": {"vegetative": 0.6, "flowering": 1.0, "pod_fill": 0.5},
+          "phase_weights_by_model": {"winter_canola": {"green_up_bolting": 0.4, "flowering": 1.0, "pod_fill": 0.5}},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["days_ge_86", ">=", 1]], "lead": "lead_ge_86"},
+            {"level": "MODERATE", "all": [["days_ge_86", ">=", 3]], "lead": "lead_ge_86"},
+            {"level": "HIGH", "all": [["days_ge_90", ">=", 3]], "lead": "lead_ge_90"}
+          ],
+          "vulnerable": "Bolting through the end of flowering.",
+          "short_term": "Above about 85-86 F, open flowers may fail to pollinate.",
+          "medium_term": "Reduced seed yield; heat during seed formation lowers oil content.",
+          "implications": "Yield and oil-content losses, larger with drought.",
+          "monitor": ["Days at or above 86 F during flowering", "Soil moisture"],
+          "sources": ["S44", "S46", "S40"]
+        },
+        "drought": {
+          "phase_weights": {"vegetative": 0.4, "flowering": 1.0, "pod_fill": 1.0},
+          "phase_weights_by_model": {"winter_canola": {"establishment": 0.6, "green_up_bolting": 0.6, "flowering": 1.0, "pod_fill": 1.0}},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["dm_d1", ">=", 50]]},
+            {"level": "MODERATE", "all": [["dm_d2", ">=", 50]]},
+            {"level": "HIGH", "all": [["dm_d3", ">=", 50]]}
+          ],
+          "vulnerable": "Flowering and pod/seed fill; for winter canola also fall establishment (plants need adequate size before winter).",
+          "short_term": "Canola is less drought tolerant than small grains; moisture stress at flowering reduces pod set.",
+          "medium_term": "Lower yield; small fall plants enter winter with higher winterkill risk.",
+          "implications": "Yield potential and winter survival.",
+          "monitor": ["Drought Monitor changes", "Fall plant size (winter canola)"],
+          "sources": ["S40", "S44", "S46", "USDM"]
+        },
+        "heavy_rain": {
+          "phase_weights": {"planted_emerging": 0.7, "vegetative": 0.7, "flowering": 0.8, "pod_fill": 0.6, "mature_standing": 0.4},
+          "phase_weights_by_model": {"winter_canola": {"establishment": 0.5, "green_up_bolting": 0.6, "flowering": 0.8, "pod_fill": 0.6, "mature_standing": 0.4}},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["qpf72", ">=", 1.0]], "lead": "lead_rain1"},
+            {"level": "MODERATE", "all": [["qpf72", ">=", 2.0]], "lead": "lead_rain1"},
+            {"level": "HIGH", "all": [["qpf72", ">=", 3.0]], "lead": "lead_rain2"},
+            {"level": "HIGH", "all": [["ero_max", ">=", 3]], "lead": "lead_ero"}
+          ],
+          "vulnerable": "All growth stages; flowering is most affected.",
+          "short_term": "Yield reduction is common after only 3 consecutive days of waterlogging.",
+          "medium_term": "Fewer pods per branch and seeds per pod, worse with high temperatures.",
+          "implications": "Yield losses in poorly drained fields.",
+          "monitor": ["Days of saturated soil", "Standing water in low areas"],
+          "sources": ["S43", "S46", "S47"]
+        },
+        "harvest_rain": {
+          "phase_weights": {"mature_standing": 1.0},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["qpf72", ">=", 0.5]], "lead": "lead_rain05"},
+            {"level": "MODERATE", "all": [["qpf7d", ">=", 1.5]], "lead": "lead_rain05"}
+          ],
+          "vulnerable": "Mature or swathed canola awaiting harvest.",
+          "short_term": "Rain on mature canola weakens pods and increases shatter.",
+          "medium_term": "Delayed straight-cutting averaged about 15% yield loss in prairie trials.",
+          "implications": "Harvest losses.",
+          "monitor": ["Seed moisture and pod shatter", "Harvest timing"],
+          "sources": ["S45", "S46"]
+        },
+        "severe_storm": {
+          "phase_weights": {"vegetative": 0.4, "flowering": 0.7, "pod_fill": 0.9, "mature_standing": 1.0},
+          "phase_weights_by_model": {"winter_canola": {"green_up_bolting": 0.4, "flowering": 0.7, "pod_fill": 0.9, "mature_standing": 1.0}},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["spc_max", ">=", 2]], "lead": "lead_spc"},
+            {"level": "MODERATE", "all": [["spc_max", ">=", 3]], "lead": "lead_spc"},
+            {"level": "HIGH", "all": [["spc_max", ">=", 4]], "lead": "lead_spc"},
+            {"level": "HIGH", "all": [["spc_prob", ">=", 30]], "lead": "lead_spc"},
+            {"level": "CRITICAL", "all": [["spc_max", ">=", 5]], "lead": "lead_spc"}
+          ],
+          "vulnerable": "Pod fill and maturity; early-season hail is usually recovered.",
+          "short_term": "Hail and wind can shatter mature pods; losses above 50% are possible at harvest.",
+          "medium_term": "Replacement branching can compensate for early damage but not for losses at maturity.",
+          "implications": "Yield losses, especially close to harvest.",
+          "monitor": ["Stand and pod damage after storms", "Crop stage at the time of the storm"],
+          "sources": ["S43", "S44", "S46", "SPC"]
+        },
+        "high_wind": {
+          "phase_weights": {"pod_fill": 0.5, "mature_standing": 1.0},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["gust72", ">=", 40]], "lead": "lead_gust_40"},
+            {"level": "MODERATE", "all": [["gust72", ">=", 50]], "lead": "lead_gust_50"},
+            {"level": "HIGH", "all": [["gust72", ">=", 58]], "lead": "lead_gust_58"}
+          ],
+          "vulnerable": "Mature standing canola and swaths.",
+          "short_term": "Strong winds can shatter mature pods and move swaths.",
+          "medium_term": "Harvest losses.",
+          "implications": "Lower harvested yield.",
+          "monitor": ["Swath condition after wind", "Pod shatter"],
+          "sources": ["S45", "S46"]
+        }
+      }
+    },    "sunflower": {
+      "label": "Sunflowers",
+      "presence_acres": 2000,
+      "stage_model": "progress",
+      "nass_sequence": ["planted", "emerged", "blooming", "seed_fill", "mature", "harvested"],
+      "milestone_offsets_days": {"emerged": 10, "blooming": 65, "seed_fill": 80, "mature": 105},
+      "phases": {"not_planted": [null, "planted"], "planted_emerging": ["planted", "emerged"], "vegetative": ["emerged", "blooming"],
+                 "flowering": ["blooming", "seed_fill"], "seed_fill": ["seed_fill", "mature"], "mature_standing": ["mature", "harvested"],
+                 "harvested": ["harvested", null]},
+      "phase_labels": {"not_planted": "not yet planted", "planted_emerging": "planted/emerging", "vegetative": "vegetative/bud",
+                       "flowering": "flowering", "seed_fill": "seed fill", "mature_standing": "mature (R9), unharvested", "harvested": "harvested"},
+      "calendar_source": "S01",
+      "calendar": {
+        "default": {"plant": ["05-14", "05-19", "06-08", "06-15"], "harvest": ["10-01", "10-09", "11-10", "11-23"]},
+        "KS": {"plant": ["05-15", "05-25", "06-30", "07-10"], "harvest": ["09-15", "10-01", "11-15", "11-30"]},
+        "MN": {"plant": ["05-07", "05-16", "06-07", "06-15"], "harvest": ["09-26", "10-04", "11-08", "11-25"]},
+        "NE": {"plant": ["06-01", "06-05", "06-30", "07-05"], "harvest": ["10-01", "10-05", "10-25", "11-05"]},
+        "ND": {"plant": ["05-14", "05-19", "06-08", "06-15"], "harvest": ["10-01", "10-09", "11-10", "11-23"]},
+        "OK": {"plant": ["05-01", "05-15", "07-15", "07-30"], "harvest": ["08-01", "08-30", "10-30", "12-10"]},
+        "SD": {"plant": ["05-16", "05-24", "06-21", "06-29"], "harvest": ["09-25", "10-03", "11-10", "11-21"]}
+      },
+      "hazards": {
+        "freeze": {
+          "phase_weights": {"planted_emerging": 0.3, "vegetative": 0.5, "flowering": 1.0, "seed_fill": 0.6, "mature_standing": 0.05},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["tmin7d", "<=", 34]], "lead": "lead_le_36"},
+            {"level": "MODERATE", "all": [["tmin7d", "<=", 30]], "lead": "lead_le_30"},
+            {"level": "HIGH", "all": [["tmin7d", "<=", 25]], "lead": "lead_le_25"},
+            {"level": "CRITICAL", "all": [["run_le_24", ">=", 2], ["lead_le_24", "<=", 48]], "lead": "lead_le_24"}
+          ],
+          "vulnerable": "Bud and flowering stages are the most frost-sensitive; emerging seedlings tolerate about 26 F; risk becomes minimal at physiological maturity (R9).",
+          "short_term": "About 30 F or below injures open florets; 25 F at bud often damages the stalk below the bud; a general killing freeze is about 24 F for 2 hours.",
+          "medium_term": "Frost before full maturity lowers yield, oil content and test weight; 10-14 days after petal drying, plants tolerate about 25 F with only minor damage.",
+          "implications": "Yield, oil and test-weight losses in immature fields; mature (R9) fields are minimally affected.",
+          "monitor": ["Share of fields before R9 (back of head yellow, bracts brown)", "Hours at or below 28 F and 24 F", "Seed fill and test weight in frosted fields"],
+          "sources": ["S29", "S60", "S61"]
+        },
+        "heat": {
+          "phase_weights": {"flowering": 0.5, "seed_fill": 0.5},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["days_ge_90", ">=", 3]], "lead": "lead_ge_90"},
+            {"level": "MODERATE", "all": [["days_ge_95", ">=", 3]], "lead": "lead_ge_95"}
+          ],
+          "vulnerable": "Seed formation (reproductive stages).",
+          "short_term": "High temperatures during seed formation change the oil profile; hot, dry conditions favor charcoal rot.",
+          "medium_term": "No numeric yield threshold was found in extension sources, so this is treated as a monitoring signal only.",
+          "implications": "Oil composition and disease risk.",
+          "monitor": ["Soil moisture during flowering", "Signs of charcoal rot in hot, dry fields"],
+          "sources": ["S60"]
+        },
+        "drought": {
+          "phase_weights": {"vegetative": 0.3, "flowering": 1.0, "seed_fill": 0.6},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["dm_d1", ">=", 50]]},
+            {"level": "MODERATE", "all": [["dm_d2", ">=", 50]]},
+            {"level": "HIGH", "all": [["dm_d3", ">=", 50]]}
+          ],
+          "vulnerable": "Bud through flowering (R2-R5.9) is the most water-sensitive period.",
+          "short_term": "Daily water use exceeds about 0.27 in from head emergence to full head.",
+          "medium_term": "Excessive soil-water depletion during R2-R5.9 has cut yields by about 50% in research cited by NDSU.",
+          "implications": "Yield losses; emergence to early bud is least sensitive.",
+          "monitor": ["Drought Monitor changes", "Crop stage relative to bud and flowering"],
+          "sources": ["S60", "USDM"]
+        },
+        "heavy_rain": {
+          "phase_weights": {"planted_emerging": 0.7, "vegetative": 0.6, "flowering": 0.5, "seed_fill": 0.4, "mature_standing": 0.3},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["qpf72", ">=", 1.0]], "lead": "lead_rain1"},
+            {"level": "MODERATE", "all": [["qpf72", ">=", 2.0]], "lead": "lead_rain1"},
+            {"level": "HIGH", "all": [["qpf72", ">=", 3.0]], "lead": "lead_rain2"},
+            {"level": "HIGH", "all": [["ero_max", ">=", 3]], "lead": "lead_ero"}
+          ],
+          "vulnerable": "All growth stages in poorly drained fields.",
+          "short_term": "Plants flooded for more than about three days may not recover.",
+          "medium_term": "Stand loss and slower development.",
+          "implications": "Replant decisions early in the season; yield loss later.",
+          "monitor": ["Days of standing water", "Stand counts after water recedes"],
+          "sources": ["S60", "WPC_ERO"]
+        },
+        "harvest_rain": {
+          "phase_weights": {"seed_fill": 0.1, "mature_standing": 1.0},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["qpf72", ">=", 0.5]], "lead": "lead_rain05"},
+            {"level": "MODERATE", "all": [["qpf7d", ">=", 1.5]], "lead": "lead_rain05"}
+          ],
+          "vulnerable": "Mature sunflowers awaiting harvest.",
+          "short_term": "Rain delays harvest and slows drydown; natural-air drying times double near 27 F.",
+          "medium_term": "Delays increase blackbird damage, lodging and head losses.",
+          "implications": "Harvest losses and higher drying costs.",
+          "monitor": ["Harvest progress versus average (USDA NASS)", "Seed moisture (harvest at up to about 25%)", "Stalk breakage and lodging"],
+          "sources": ["S60"]
+        },
+        "severe_storm": {
+          "phase_weights": {"planted_emerging": 0.3, "vegetative": 0.4, "flowering": 0.8, "seed_fill": 0.7, "mature_standing": 0.6},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["spc_max", ">=", 2]], "lead": "lead_spc"},
+            {"level": "MODERATE", "all": [["spc_max", ">=", 3]], "lead": "lead_spc"},
+            {"level": "HIGH", "all": [["spc_max", ">=", 4]], "lead": "lead_spc"},
+            {"level": "HIGH", "all": [["spc_prob", ">=", 30]], "lead": "lead_spc"},
+            {"level": "CRITICAL", "all": [["spc_max", ">=", 5]], "lead": "lead_spc"}
+          ],
+          "vulnerable": "Flowering through maturity.",
+          "short_term": "Hail stand loss at R4-R6 reduces yield roughly one-for-one (10% stand loss is about 10% yield loss); stalk breakage risk is greatest at maturity.",
+          "medium_term": "Defoliation of 30% costs about 3-10% yield depending on stage.",
+          "implications": "Yield losses and harvest difficulty in broken or lodged fields.",
+          "monitor": ["Stand and head damage after storms", "Stalk breakage"],
+          "sources": ["S60", "SPC"]
+        },
+        "high_wind": {
+          "phase_weights": {"seed_fill": 0.4, "mature_standing": 0.8},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["gust72", ">=", 40]], "lead": "lead_gust_40"},
+            {"level": "MODERATE", "all": [["gust72", ">=", 50]], "lead": "lead_gust_50"},
+            {"level": "HIGH", "all": [["gust72", ">=", 58]], "lead": "lead_gust_58"}
+          ],
+          "vulnerable": "Mature sunflowers, especially under drought stress or heavy stem weevil infestation.",
+          "short_term": "Stalk breakage and lodging risk is greatest at maturity.",
+          "medium_term": "Harvest losses in lodged fields.",
+          "implications": "Lower harvested yield.",
+          "monitor": ["Unharvested share", "Lodging after wind events"],
+          "sources": ["S60"]
+        },
+        "winter_storm": {
+          "phase_weights": {"mature_standing": 1.0},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["snow72", ">=", 1]], "lead": "lead_snow1"},
+            {"level": "MODERATE", "all": [["snow72", ">=", 4]], "lead": "lead_snow1"},
+            {"level": "HIGH", "all": [["snow72", ">=", 8]], "lead": "lead_snow1"}
+          ],
+          "vulnerable": "Sunflowers still standing in the field.",
+          "short_term": "Snow halts harvest of remaining fields.",
+          "medium_term": "Standing heads are exposed to lodging and bird damage while harvest is delayed.",
+          "implications": "Harvest losses for the remaining acreage.",
+          "monitor": ["Remaining unharvested share (USDA NASS)", "Lodging after the storm"],
+          "sources": ["S60"]
+        },
+        "outlook_wet": {
+          "phase_weights": {"mature_standing": 1.0},
+          "levels": [{"level": "INFORMATIONAL", "all": [["cpc_p814_above", ">=", 50]]}],
+          "vulnerable": "Unharvested mature sunflowers.",
+          "short_term": "Outlook only: a wetter-than-normal signal 8-14 days out, not a rainfall forecast.",
+          "medium_term": "If realized, wetter weeks could slow the remaining harvest.",
+          "implications": "Harvest planning.",
+          "monitor": ["Updates to the CPC outlook"],
+          "sources": ["CPC"]
+        }
+      }
+    },
+    "sugarcane": {
+      "label": "Sugarcane",
+      "states": ["LA", "FL"],
+      "presence_acres": 1000,
+      "stage_model": "sugarcane",
+      "calendar_source": "S01 (LA harvest end extended to Jan 10 to reflect recent ~4-month milling seasons noted by LSU AgCenter, S70)",
+      "calendar": {
+        "LA": {"harvest": ["09-20", "10-05", "12-20", "01-10"], "grand_growth": ["06-01", "06-15", "09-01", "09-19"]},
+        "FL": {"harvest": ["10-07", "10-30", "03-21", "04-15"], "grand_growth": ["05-01", "05-15", "09-15", "10-06"]}
+      },
+      "phase_labels": {"standing_unharvested": "standing cane (unharvested)", "harvested_stubble": "harvested (stubble)",
+                       "grand_growth": "grand growth", "stubble_dormant": "stubble/ratoons (dormant)"},
+      "hazards": {
+        "freeze": {
+          "phase_weights": {"standing_unharvested": 1.0, "harvested_stubble": 0.15, "stubble_dormant": 0.15, "grand_growth": 0.5},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["tmin7d", "<=", 36]], "lead": "lead_le_36"},
+            {"level": "MODERATE", "all": [["tmin7d", "<=", 32]], "lead": "lead_le_32"},
+            {"level": "HIGH", "all": [["tmin7d", "<=", 25]], "lead": "lead_le_25"},
+            {"level": "CRITICAL", "all": [["tmin7d", "<=", 22], ["lead_le_22", "<=", 48]], "lead": "lead_le_22"}
+          ],
+          "vulnerable": "Standing (unharvested) cane during the harvest season; stubble and ratoons are mostly protected below ground unless the soil freezes.",
+          "short_term": "LSU AgCenter freeze categories: 32 to 25 F kills terminal buds and leaves but usually not the stalk; 25 to 22 F also kills lateral buds and can damage stalk tissue; below 22 F kills all above-ground parts.",
+          "medium_term": "After damaging freezes, bacteria can convert sucrose to dextran. In LSU trials quality changed little for 2 weeks, was harmed by about 3 weeks and was unacceptable for processing by about 30 days; warm weather after a freeze speeds deterioration. In Florida trials, freezes of 24.8 F or colder hastened juice deterioration.",
+          "implications": "Growers and mills may reprioritize harvest toward damaged and less cold-tolerant varieties; sugar recovery and juice quality can decline. A light freeze (32-25 F) mainly affects leaves and terminal buds.",
+          "monitor": ["Hours at or below 25 F and 22 F in each parish or county", "Field-by-field damage once the full extent shows (up to about a week)", "Temperatures after the freeze (warm weather speeds deterioration)", "Variety cold tolerance and remaining standing acreage"],
+          "sources": ["S70", "S71", "S72", "S75", "S76"]
+        },
+        "heavy_rain": {
+          "phase_weights": {"standing_unharvested": 0.2, "grand_growth": 0.1, "harvested_stubble": 0.1},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["qpf72", ">=", 2.0]], "lead": "lead_rain2"},
+            {"level": "MODERATE", "all": [["qpf72", ">=", 3.0]], "lead": "lead_rain2"},
+            {"level": "MODERATE", "all": [["ero_max", ">=", 3]], "lead": "lead_ero"},
+            {"level": "HIGH", "all": [["ero_max", ">=", 4]], "lead": "lead_ero"}
+          ],
+          "vulnerable": "Harvest operations in standing cane; established cane tolerates temporary flooding.",
+          "short_term": "Saturated fields slow cutting and hauling.",
+          "medium_term": "Established cane showed no yield or sugar effect from flooding of up to 2 weeks in a USDA-ARS study, but persistently shallow water tables reduced yields.",
+          "implications": "Harvest delays rather than direct crop loss in most cases.",
+          "monitor": ["Field access and harvest pace", "Standing water duration"],
+          "sources": ["S73", "WPC_ERO"]
+        },
+        "harvest_rain": {
+          "phase_weights": {"standing_unharvested": 1.0},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["qpf72", ">=", 1.0]], "lead": "lead_rain1"},
+            {"level": "MODERATE", "all": [["qpf7d", ">=", 2.5]], "lead": "lead_rain1"}
+          ],
+          "vulnerable": "Standing cane during the harvest and milling season.",
+          "short_term": "Wet fields delay cutting and hauling.",
+          "medium_term": "Delays push harvest into colder weeks; growers and mills aim to finish most harvest before January because late seasons raise freeze exposure.",
+          "implications": "Harvest scheduling and freeze exposure of the remaining crop.",
+          "monitor": ["Harvest pace versus schedule", "Freeze outlook for the remaining harvest window"],
+          "sources": ["S70"]
+        },
+        "high_wind": {
+          "phase_weights": {"grand_growth": 0.8, "standing_unharvested": 0.6},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["gust72", ">=", 40]], "lead": "lead_gust_40"},
+            {"level": "MODERATE", "all": [["gust72", ">=", 50]], "lead": "lead_gust_50"},
+            {"level": "HIGH", "all": [["gust72", ">=", 58]], "lead": "lead_gust_58"}
+          ],
+          "vulnerable": "Tall cane late in the growing season.",
+          "short_term": "Strong winds can lodge cane; lodged cane usually partly re-erects within about a week.",
+          "medium_term": "The growth pause costs some tonnage, and lodged cane is more vulnerable to freeze damage.",
+          "implications": "Tonnage and harvest efficiency.",
+          "monitor": ["Lodging after the event", "Recovery over the following week"],
+          "sources": ["S74", "S71"]
+        },
+        "severe_storm": {
+          "phase_weights": {"grand_growth": 0.4, "standing_unharvested": 0.3},
+          "levels": [
+            {"level": "INFORMATIONAL", "all": [["spc_max", ">=", 3]], "lead": "lead_spc"},
+            {"level": "MODERATE", "all": [["spc_max", ">=", 4]], "lead": "lead_spc"}
+          ],
+          "vulnerable": "Tall standing cane (wind lodging).",
+          "short_term": "Thunderstorm winds can lodge cane.",
+          "medium_term": "Lodged cane partly re-erects within about a week; some tonnage loss.",
+          "implications": "Harvest efficiency.",
+          "monitor": ["Lodging after storms"],
+          "sources": ["S74", "SPC"]
+        },
+        "drought": {
+          "phase_weights": {"grand_growth": 0.6, "stubble_dormant": 0.2},
+          "levels": [{"level": "INFORMATIONAL", "all": [["dm_d2", ">=", 50]]}],
+          "vulnerable": "Grand growth period.",
+          "short_term": "Reported for context; no crop-specific drought threshold was verified for sugarcane.",
+          "medium_term": "Context only.",
+          "implications": "Context only.",
+          "monitor": ["Drought Monitor changes"],
+          "sources": ["USDM"]
+        },
+        "outlook_cold": {
+          "phase_weights": {"standing_unharvested": 1.0, "stubble_dormant": 0.3},
+          "levels": [{"level": "INFORMATIONAL", "all": [["cpc_t814_below", ">=", 50]]}],
+          "vulnerable": "Standing cane during the harvest season.",
+          "short_term": "Outlook only: a colder-than-normal signal 8-14 days out raises the chance of freezes while cane is still standing; it is not a freeze forecast.",
+          "medium_term": "If freezes follow, harvest priorities may shift toward less cold-tolerant varieties.",
+          "implications": "Harvest planning.",
+          "monitor": ["CPC outlook updates", "NWS 7-day lows as the period approaches"],
+          "sources": ["CPC", "S70"]
+        }
+      }
+    }
+  }
+}
