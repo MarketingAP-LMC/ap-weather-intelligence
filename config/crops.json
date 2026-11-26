@@ -62,6 +62,7 @@
   "crops": {
     "corn": {
       "label": "Corn",
+      "exclude_states": ["CA"],
       "presence_acres": 5000,
       "stage_model": "progress",
       "nass_sequence": ["planted", "emerged", "silking", "dough", "dented", "mature", "harvested"],
@@ -223,6 +224,7 @@
       }
     },    "soybeans": {
       "label": "Soybeans",
+      "exclude_states": ["CA"],
       "presence_acres": 5000,
       "stage_model": "progress",
       "nass_sequence": ["planted", "emerged", "blooming", "setting_pods", "dropping_leaves", "harvested"],
@@ -383,6 +385,7 @@
     },
     "canola": {
       "label": "Canola",
+      "exclude_states": ["CA"],
       "presence_acres": 1000,
       "stage_model": "progress",
       "stage_model_by_state": {"OK": "winter_canola", "KS": "winter_canola"},
@@ -534,6 +537,7 @@
       }
     },    "sunflower": {
       "label": "Sunflowers",
+      "exclude_states": ["CA"],
       "presence_acres": 2000,
       "stage_model": "progress",
       "nass_sequence": ["planted", "emerged", "blooming", "seed_fill", "mature", "harvested"],
@@ -991,7 +995,8 @@
               "09-24"
             ]
           }
-        }
+        },
+        "CA": {"phase_windows": {"establishment": ["11-01", "12-31"], "dormancy": ["01-01", "01-31"], "green_up_jointing": ["02-01", "03-10"], "boot_heading": ["03-11", "04-10"], "flowering_grain_fill": ["04-11", "05-15"], "mature_harvest": ["05-16", "07-15"], "off_season": ["07-16", "10-31"]}}
       },
       "hazards": {
         "freeze": {

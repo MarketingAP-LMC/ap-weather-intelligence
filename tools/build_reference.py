@@ -35,7 +35,9 @@ CDL_SERVICE = "https://nassgeodata.gmu.edu/axis2/services/CDLService/GetCDLStat?
 NWS = "https://api.weather.gov"
 
 STATES = {"OK": "40", "ND": "38", "SD": "46", "KS": "20", "NE": "31", "MN": "27",
-          "IA": "19", "IL": "17", "IN": "18", "OH": "39", "LA": "22", "FL": "12"}
+          "IA": "19", "IL": "17", "IN": "18", "OH": "39", "LA": "22", "FL": "12", "CA": "06"}
+# States monitored for only some crops (all other states: every crop in CDL_CODES).
+STATE_CROPS = {"CA": {"winter_wheat"}}
 
 # CDL category codes (USDA NASS CDL legend). Double-crop classes count toward each crop named.
 CDL_CODES = {
@@ -120,6 +122,8 @@ def select_counties(counties, coverage):
     for st, items in by_state.items():
         totals[st] = {}
         for crop in CDL_CODES:
+            if crop not in STATE_CROPS.get(st, CDL_CODES):
+                continue
             total = sum(c["acres"][crop] for c in items)
             totals[st][crop] = total
             if total <= 0:
@@ -180,7 +184,7 @@ def main():
     args = ap.parse_args()
 
     gaz = load_gazetteer()
-    log(f"gazetteer counties in 12 states: {len(gaz)}")
+    log(f"gazetteer counties in {len(STATES)} states: {len(gaz)}")
     with ThreadPoolExecutor(max_workers=8) as ex:
         texts = list(ex.map(lambda c: (c["fips"], fetch_cdl(c["fips"])), gaz))
     cdl = {f: parse_cdl(t) for f, t in texts}

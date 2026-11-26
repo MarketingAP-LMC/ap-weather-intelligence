@@ -89,7 +89,7 @@ def cmd_selftest(cfg, args):
 
     c = next(iter(cfg.counties.values()))
     today = to_ct(utcnow()).date()
-    check("nws_alerts", lambda: f"{len(nws.fetch_active_alerts(cfg.monitored_states))} active alerts in 12 states")
+    check("nws_alerts", lambda: f"{len(nws.fetch_active_alerts(cfg.monitored_states))} active alerts in {len(cfg.monitored_states)} states")
     check("nws_forecast", lambda: f"gridpoint updated {nws.fetch_gridpoint(c['nws']['grid'], c['nws']['x'], c['nws']['y']).get('updateTime')}")
     check("spc_outlooks", lambda: f"day1 issued {spc.fetch_outlooks()['d1_cat'].get('issue')}")
     check("wpc", lambda: f"7-day QPF issued {wpc.fetch_products()['qpf7d'].get('issue')}")

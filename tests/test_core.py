@@ -305,6 +305,12 @@ class WinterWheatTests(unittest.TestCase):
         self.assertEqual(stages.estimate("winter_wheat", ww, "OK", date(2027, 1, 10))["phases"], {"dormancy": 1.0})
         self.assertEqual(stages.estimate("winter_wheat", ww, "OK", date(2027, 4, 10))["phases"], {"boot_heading": 1.0})
         self.assertEqual(stages.estimate("winter_wheat", ww, "KS", date(2027, 3, 20))["phases"], {"green_up_jointing": 1.0})
+        self.assertEqual(stages.estimate("winter_wheat", ww, "CA", date(2027, 4, 1))["phases"], {"boot_heading": 1.0})
+
+    def test_california_is_winter_wheat_only(self):
+        for crop in ("corn", "soybeans", "canola", "sunflower"):
+            self.assertIn("CA", self.crops["crops"][crop].get("exclude_states", []))
+        self.assertNotIn("CA", self.crops["crops"]["winter_wheat"].get("exclude_states", []))
 
     def test_freeze_exposure_only_in_spring(self):
         from datetime import date
