@@ -286,3 +286,48 @@ class LevelTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class WinterWheatTests(unittest.TestCase):
+    """Winter wheat: calendar stage model, freeze ladder and NASS parsing (added 2026-11-26)."""
+
+    @classmethod
+    def setUpClass(cls):
+        import json
+        from pathlib import Path
+        root = Path(__file__).resolve().parent.parent
+        cls.crops = json.loads((root / "config" / "crops.json").read_text(encoding="utf-8"))
+        cls.fixture = (root / "tests" / "fixtures" / "prog4626.txt").read_text(encoding="latin-1")
+
+    def test_stage_model_by_calendar(self):
+        from datetime import date
+        from apwx.analysis import stages
+        ww = self.crops["crops"]["winter_wheat"]
+        self.assertEqual(stages.estimate("winter_wheat", ww, "OK", date(2027, 1, 10))["phases"], {"dormancy": 1.0})
+        self.assertEqual(stages.estimate("winter_wheat", ww, "OK", date(2027, 4, 10))["phases"], {"boot_heading": 1.0})
+        self.assertEqual(stages.estimate("winter_wheat", ww, "KS", date(2027, 3, 20))["phases"], {"green_up_jointing": 1.0})
+        self.assertEqual(stages.estimate("winter_wheat", ww, "CA", date(2027, 4, 1))["phases"], {"boot_heading": 1.0})
+
+    def test_california_is_winter_wheat_only(self):
+        for crop in ("corn", "soybeans", "canola", "sunflower"):
+            self.assertIn("CA", self.crops["crops"][crop].get("exclude_states", []))
+        self.assertNotIn("CA", self.crops["crops"]["winter_wheat"].get("exclude_states", []))
+
+    def test_freeze_exposure_only_in_spring(self):
+        from datetime import date
+        from apwx.analysis import stages
+        ww = self.crops["crops"]["winter_wheat"]
+        winter = stages.estimate("winter_wheat", ww, "OK", date(2027, 1, 10))
+        spring = stages.estimate("winter_wheat", ww, "OK", date(2027, 4, 10))
+        self.assertEqual(stages.exposure(winter, ww, "freeze")[0], 0.0)
+        self.assertEqual(stages.exposure(spring, ww, "freeze")[0], 1.0)
+
+    def test_nass_parses_winter_wheat_tables(self):
+        from apwx.sources import nass
+        rows = nass.parse_report(self.fixture)["rows"]
+        ok = {r["metric"]: r for r in rows if r["crop"] == "winter_wheat" and r["state"] == "OK"}
+        self.assertEqual(ok["planted"]["this_week"], 84.0)
+        self.assertEqual(ok["emerged"]["this_week"], 66.0)
+        self.assertEqual(ok["emerged"]["avg_5yr"], 79.0)
+        self.assertEqual(ok["cond_g"]["this_week"], 32.0)
+        corn = [r for r in rows if r["crop"] == "corn"]
+        self.assertTrue(corn, "existing crops must still parse")

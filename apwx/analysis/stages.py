@@ -162,7 +162,7 @@ def estimate(crop_id, crop_cfg, state, d, progress=None, max_age_days=10):
             detail = "Between harvest and spring regrowth: ratoon stubble and plant cane in the field (typical calendar)."
         result.update(basis="calendar", as_of=d.isoformat(), confidence="low", phases=phases, detail=detail)
         return result
-    if model == "winter_canola":
+    if model in ("winter_canola", "winter_wheat"):
         cal = _calendar_for(crop_cfg, state)
         phases = {}
         for phase, window in cal.get("phase_windows", {}).items():
@@ -172,7 +172,8 @@ def estimate(crop_id, crop_cfg, state, d, progress=None, max_age_days=10):
             phases = {"off_season": 1.0}
         name = next(iter(phases))
         result.update(basis="calendar", as_of=d.isoformat(), confidence="low", phases=phases,
-                      detail=f"Winter canola typical calendar: {crop_cfg.get('phase_labels', {}).get(name, name)}.")
+                      detail=f"{crop_cfg.get('label', crop_id).capitalize() if model == 'winter_wheat' else 'Winter canola'} typical calendar: "
+                             f"{crop_cfg.get('phase_labels', {}).get(name, name)}.")
         return result
     return result
 

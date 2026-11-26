@@ -9,7 +9,7 @@ Selection rule (documented in docs/METHODOLOGY.md):
   For each state and crop, counties are ranked by CDL acreage of that crop and
   kept until they cover COVERAGE of the state's total acreage of that crop,
   as long as each kept county has at least MIN_ACRES of the crop. The union
-  across the five crops is the monitored county set.
+  across the monitored crops is the monitored county set.
 
 Usage:  python tools/build_reference.py [--coverage 0.8] [--skip-nws]
 """
@@ -35,7 +35,9 @@ CDL_SERVICE = "https://nassgeodata.gmu.edu/axis2/services/CDLService/GetCDLStat?
 NWS = "https://api.weather.gov"
 
 STATES = {"OK": "40", "ND": "38", "SD": "46", "KS": "20", "NE": "31", "MN": "27",
-          "IA": "19", "IL": "17", "IN": "18", "OH": "39", "LA": "22", "FL": "12"}
+          "IA": "19", "IL": "17", "IN": "18", "OH": "39", "LA": "22", "FL": "12", "CA": "06"}
+# States monitored for only some crops (all other states: every crop in CDL_CODES).
+STATE_CROPS = {"CA": {"winter_wheat"}}
 
 # CDL category codes (USDA NASS CDL legend). Double-crop classes count toward each crop named.
 CDL_CODES = {
@@ -44,8 +46,10 @@ CDL_CODES = {
     "sunflower": {6},
     "canola": {31},
     "sugarcane": {45},
+    "winter_wheat": {24, 26, 225, 236, 238},
 }
-MIN_ACRES = {"corn": 5000, "soybeans": 5000, "sunflower": 2000, "canola": 1000, "sugarcane": 1000}
+MIN_ACRES = {"corn": 5000, "soybeans": 5000, "sunflower": 2000, "canola": 1000, "sugarcane": 1000,
+             "winter_wheat": 5000}
 
 CACHE = ROOT / "reference" / "cache"
 
@@ -118,6 +122,8 @@ def select_counties(counties, coverage):
     for st, items in by_state.items():
         totals[st] = {}
         for crop in CDL_CODES:
+            if crop not in STATE_CROPS.get(st, CDL_CODES):
+                continue
             total = sum(c["acres"][crop] for c in items)
             totals[st][crop] = total
             if total <= 0:
@@ -178,7 +184,7 @@ def main():
     args = ap.parse_args()
 
     gaz = load_gazetteer()
-    log(f"gazetteer counties in 12 states: {len(gaz)}")
+    log(f"gazetteer counties in {len(STATES)} states: {len(gaz)}")
     with ThreadPoolExecutor(max_workers=8) as ex:
         texts = list(ex.map(lambda c: (c["fips"], fetch_cdl(c["fips"])), gaz))
     cdl = {f: parse_cdl(t) for f, t in texts}
@@ -187,11 +193,12 @@ def main():
     # full acreage table (all counties) for transparency
     with open(ROOT / "reference" / f"cdl_{CDL_YEAR}_county_acreage.csv", "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["fips", "state", "county", "corn_ac", "soybeans_ac", "sunflower_ac", "canola_ac", "sugarcane_ac"])
+        w.writerow(["fips", "state", "county", "corn_ac", "soybeans_ac", "sunflower_ac", "canola_ac", "sugarcane_ac",
+                    "winter_wheat_ac"])
         for c in sorted(gaz, key=lambda x: x["fips"]):
             a = c["acres"]
             w.writerow([c["fips"], c["state"], c["name"], a["corn"], a["soybeans"], a["sunflower"], a["canola"],
-                        a["sugarcane"]])
+                        a["sugarcane"], a["winter_wheat"]])
 
     selected, totals = select_counties(gaz, args.coverage)
     bounds = {}
