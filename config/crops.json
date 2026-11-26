@@ -53,6 +53,7 @@
     "S75": {"title": "Field Response of Sugarcane Genotypes to Freeze Stress (Edme and Glaz, J. Crop Improvement)", "publisher": "Peer-reviewed (Canal Point, FL)", "year": 2013, "url": "https://agris.fao.org/search/ru/records/65de4cd56eef00c2cea04e3d"},
     "S76": {"title": "CP 03-1912, A Sugarcane Cultivar Expanding on Sand Soil in Florida (SC111)", "publisher": "UF/IFAS EDIS", "year": 2024, "url": "https://ask.ifas.ufl.edu/publication/SC111"},
     "S77": {"title": "A tale of two freezes: the impact of snow and frigid temps on the 2025 sugarcane crop", "publisher": "American Sugar Cane League", "year": 2025, "url": "https://www.amscl.org/uncategorized/a-tale-of-two-freezes-the-impact-of-snow-and-frigid-temps-on-the-2025-sugarcane-crop/"},
+    "S80": {"title": "Spring Freeze Injury to Kansas Wheat (C646)", "publisher": "Kansas State University Research and Extension", "url": "https://bookstore.ksre.ksu.edu/pubs/C646.pdf", "note": "Temperature/stage table (injury after about 2 hours). URL and values to be re-checked by the owner."},
     "CPC": {"title": "CPC 6-10 and 8-14 Day Outlooks", "publisher": "NOAA Climate Prediction Center", "url": "https://www.cpc.ncep.noaa.gov/products/predictions/814day/"},
     "USDM": {"title": "U.S. Drought Monitor", "publisher": "NDMC, USDA, NOAA", "url": "https://droughtmonitor.unl.edu/"},
     "WPC_ERO": {"title": "WPC Excessive Rainfall Outlook", "publisher": "NOAA Weather Prediction Center", "url": "https://www.wpc.ncep.noaa.gov/qpf/excessive_rainfall_outlook_ero.php"},
@@ -781,6 +782,342 @@
           "implications": "Harvest planning.",
           "monitor": ["CPC outlook updates", "NWS 7-day lows as the period approaches"],
           "sources": ["CPC", "S70"]
+        }
+      }
+    },
+    "winter_wheat": {
+      "label": "Winter wheat",
+      "presence_acres": 5000,
+      "stage_model": "winter_wheat",
+      "phase_labels": {
+        "establishment": "fall establishment (tillering)",
+        "dormancy": "winter dormancy",
+        "green_up_jointing": "spring green-up / jointing",
+        "boot_heading": "boot / heading",
+        "flowering_grain_fill": "flowering / grain fill",
+        "mature_harvest": "mature / harvest",
+        "off_season": "between harvest and planting"
+      },
+      "calendar_source": "APPROXIMATE agronomic windows added 2026-11-26; verify against USDA usual planting/harvest dates (S01) and state extension calendars before relying on them.",
+      "calendar": {
+        "default": {
+          "phase_windows": {
+            "establishment": [
+              "09-01",
+              "11-15"
+            ],
+            "dormancy": [
+              "11-16",
+              "03-31"
+            ],
+            "green_up_jointing": [
+              "04-01",
+              "05-10"
+            ],
+            "boot_heading": [
+              "05-11",
+              "06-05"
+            ],
+            "flowering_grain_fill": [
+              "06-06",
+              "07-05"
+            ],
+            "mature_harvest": [
+              "07-06",
+              "07-31"
+            ],
+            "off_season": [
+              "08-01",
+              "08-31"
+            ]
+          }
+        },
+        "OK": {
+          "phase_windows": {
+            "establishment": [
+              "09-01",
+              "11-30"
+            ],
+            "dormancy": [
+              "12-01",
+              "02-10"
+            ],
+            "green_up_jointing": [
+              "02-11",
+              "03-31"
+            ],
+            "boot_heading": [
+              "04-01",
+              "04-30"
+            ],
+            "flowering_grain_fill": [
+              "05-01",
+              "05-25"
+            ],
+            "mature_harvest": [
+              "05-26",
+              "06-30"
+            ],
+            "off_season": [
+              "07-01",
+              "08-31"
+            ]
+          }
+        },
+        "KS": {
+          "phase_windows": {
+            "establishment": [
+              "09-10",
+              "11-30"
+            ],
+            "dormancy": [
+              "12-01",
+              "02-28"
+            ],
+            "green_up_jointing": [
+              "03-01",
+              "04-15"
+            ],
+            "boot_heading": [
+              "04-16",
+              "05-15"
+            ],
+            "flowering_grain_fill": [
+              "05-16",
+              "06-15"
+            ],
+            "mature_harvest": [
+              "06-16",
+              "07-15"
+            ],
+            "off_season": [
+              "07-16",
+              "09-09"
+            ]
+          }
+        },
+        "IL": {
+          "phase_windows": {
+            "establishment": [
+              "09-25",
+              "11-30"
+            ],
+            "dormancy": [
+              "12-01",
+              "03-10"
+            ],
+            "green_up_jointing": [
+              "03-11",
+              "04-20"
+            ],
+            "boot_heading": [
+              "04-21",
+              "05-20"
+            ],
+            "flowering_grain_fill": [
+              "05-21",
+              "06-15"
+            ],
+            "mature_harvest": [
+              "06-16",
+              "07-10"
+            ],
+            "off_season": [
+              "07-11",
+              "09-24"
+            ]
+          }
+        },
+        "IN": {
+          "phase_windows": {
+            "establishment": [
+              "09-25",
+              "11-30"
+            ],
+            "dormancy": [
+              "12-01",
+              "03-10"
+            ],
+            "green_up_jointing": [
+              "03-11",
+              "04-20"
+            ],
+            "boot_heading": [
+              "04-21",
+              "05-20"
+            ],
+            "flowering_grain_fill": [
+              "05-21",
+              "06-15"
+            ],
+            "mature_harvest": [
+              "06-16",
+              "07-10"
+            ],
+            "off_season": [
+              "07-11",
+              "09-24"
+            ]
+          }
+        },
+        "OH": {
+          "phase_windows": {
+            "establishment": [
+              "09-25",
+              "11-30"
+            ],
+            "dormancy": [
+              "12-01",
+              "03-15"
+            ],
+            "green_up_jointing": [
+              "03-16",
+              "04-25"
+            ],
+            "boot_heading": [
+              "04-26",
+              "05-25"
+            ],
+            "flowering_grain_fill": [
+              "05-26",
+              "06-20"
+            ],
+            "mature_harvest": [
+              "06-21",
+              "07-15"
+            ],
+            "off_season": [
+              "07-16",
+              "09-24"
+            ]
+          }
+        }
+      },
+      "hazards": {
+        "freeze": {
+          "phase_weights": {},
+          "phase_weights_by_model": {
+            "winter_wheat": {
+              "green_up_jointing": 0.5,
+              "boot_heading": 1.0,
+              "flowering_grain_fill": 1.0,
+              "mature_harvest": 0.1
+            }
+          },
+          "levels": [],
+          "levels_by_model": {
+            "winter_wheat": [
+              {
+                "level": "INFORMATIONAL",
+                "all": [
+                  [
+                    "tmin7d",
+                    "<=",
+                    32
+                  ]
+                ],
+                "lead": "lead_le_32"
+              },
+              {
+                "level": "MODERATE",
+                "all": [
+                  [
+                    "hrs_le_30",
+                    ">=",
+                    2
+                  ]
+                ],
+                "lead": "lead_le_30"
+              },
+              {
+                "level": "HIGH",
+                "all": [
+                  [
+                    "hrs_le_28",
+                    ">=",
+                    2
+                  ]
+                ],
+                "lead": "lead_le_28"
+              },
+              {
+                "level": "CRITICAL",
+                "all": [
+                  [
+                    "hrs_le_24",
+                    ">=",
+                    2
+                  ],
+                  [
+                    "lead_le_24",
+                    "<=",
+                    48
+                  ]
+                ],
+                "lead": "lead_le_24"
+              }
+            ]
+          },
+          "vulnerable": "Spring growth stages. Approximate injury temperatures after about 2 hours: jointing 24 F, boot 28 F, heading and flowering 30 F, milk and dough 28 F (S80). Fall and dormant wheat is much more tolerant.",
+          "short_term": "Freeze at jointing can kill the growing point; at boot and heading it can trap heads or cause white, sterile heads; at flowering it causes blank kernels.",
+          "medium_term": "Damage usually becomes visible 7-10 days after the freeze; split stems, white awns and poor kernel set reduce yield.",
+          "implications": "Yield loss from head and kernel injury; possible lodging from damaged stems.",
+          "monitor": [
+            "Growth stage at the time of the freeze",
+            "Hours below the critical temperature",
+            "Growing point and head color 7-10 days later"
+          ],
+          "sources": [
+            "S80"
+          ]
+        },
+        "extreme_cold": {
+          "phase_weights": {},
+          "phase_weights_by_model": {
+            "winter_wheat": {
+              "establishment": 0.5,
+              "dormancy": 0.6,
+              "green_up_jointing": 0.8
+            }
+          },
+          "levels": [],
+          "levels_by_model": {
+            "winter_wheat": [
+              {
+                "level": "INFORMATIONAL",
+                "all": [
+                  [
+                    "tmin7d",
+                    "<=",
+                    15
+                  ]
+                ],
+                "lead": "lead_le_15"
+              },
+              {
+                "level": "MODERATE",
+                "all": [
+                  [
+                    "hrs_le_10",
+                    ">=",
+                    2
+                  ]
+                ],
+                "lead": "lead_le_10"
+              }
+            ]
+          },
+          "vulnerable": "Tillering wheat; injury is listed at about 12 F for 2 hours (S80). Snow cover and soil protect the crown, which this rule does not model.",
+          "short_term": "Leaf burn is common and usually cosmetic; crown injury is what kills plants.",
+          "medium_term": "Check crowns for white, healthy tissue after green-up.",
+          "implications": "Possible stand loss in thin or late-planted stands without snow cover.",
+          "monitor": [
+            "Snow cover during the cold",
+            "Crown health after green-up"
+          ],
+          "sources": [
+            "S80"
+          ]
         }
       }
     }

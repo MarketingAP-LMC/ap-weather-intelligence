@@ -6,7 +6,7 @@ from ..sources import wpc as wpc_src
 from ..timeutil import fmt_ct, fmt_day, hours_between, parse_iso
 from . import render as R
 
-CROP_ORDER = ["soybeans", "corn", "canola", "sunflower", "sugarcane"]
+CROP_ORDER = ["soybeans", "corn", "winter_wheat", "canola", "sunflower", "sugarcane"]
 
 
 def crop_label(cfg, crop_id):

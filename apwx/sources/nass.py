@@ -16,9 +16,10 @@ STATE_NAMES = {
     "Minnesota": "MN", "Iowa": "IA", "Illinois": "IL", "Indiana": "IN", "Ohio": "OH", "Louisiana": "LA",
     "Florida": "FL",
 }
-CROPS = {"Corn": "corn", "Soybeans": "soybeans", "Sunflowers": "sunflower", "Canola": "canola"}
+CROPS = {"Corn": "corn", "Soybeans": "soybeans", "Sunflowers": "sunflower", "Canola": "canola",
+         "Winter Wheat": "winter_wheat"}
 TITLE_ANY = re.compile(r"^(.+?)\s+-\s+Selected States")
-CROP_TITLE = re.compile(r"^(Corn|Soybeans|Sunflowers|Canola)\s+(.+)$")
+CROP_TITLE = re.compile(r"^(Winter Wheat|Corn|Soybeans|Sunflowers|Canola)\s+(.+)$")
 ROW = re.compile(r"^([A-Z][A-Za-z .]+?)\s*\.{2,}\s*:(.*)$")
 RELEASED = re.compile(r"Released\s+([A-Z][a-z]+ \d{1,2}, \d{4})")
 NUM = re.compile(r"\(NA\)|NA|-|\d+(?:\.\d+)?")

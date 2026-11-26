@@ -9,7 +9,7 @@ Selection rule (documented in docs/METHODOLOGY.md):
   For each state and crop, counties are ranked by CDL acreage of that crop and
   kept until they cover COVERAGE of the state's total acreage of that crop,
   as long as each kept county has at least MIN_ACRES of the crop. The union
-  across the five crops is the monitored county set.
+  across the monitored crops is the monitored county set.
 
 Usage:  python tools/build_reference.py [--coverage 0.8] [--skip-nws]
 """
@@ -44,8 +44,10 @@ CDL_CODES = {
     "sunflower": {6},
     "canola": {31},
     "sugarcane": {45},
+    "winter_wheat": {24, 26, 225, 236, 238},
 }
-MIN_ACRES = {"corn": 5000, "soybeans": 5000, "sunflower": 2000, "canola": 1000, "sugarcane": 1000}
+MIN_ACRES = {"corn": 5000, "soybeans": 5000, "sunflower": 2000, "canola": 1000, "sugarcane": 1000,
+             "winter_wheat": 5000}
 
 CACHE = ROOT / "reference" / "cache"
 
@@ -187,11 +189,12 @@ def main():
     # full acreage table (all counties) for transparency
     with open(ROOT / "reference" / f"cdl_{CDL_YEAR}_county_acreage.csv", "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["fips", "state", "county", "corn_ac", "soybeans_ac", "sunflower_ac", "canola_ac", "sugarcane_ac"])
+        w.writerow(["fips", "state", "county", "corn_ac", "soybeans_ac", "sunflower_ac", "canola_ac", "sugarcane_ac",
+                    "winter_wheat_ac"])
         for c in sorted(gaz, key=lambda x: x["fips"]):
             a = c["acres"]
             w.writerow([c["fips"], c["state"], c["name"], a["corn"], a["soybeans"], a["sunflower"], a["canola"],
-                        a["sugarcane"]])
+                        a["sugarcane"], a["winter_wheat"]])
 
     selected, totals = select_counties(gaz, args.coverage)
     bounds = {}

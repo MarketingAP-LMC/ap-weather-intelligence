@@ -165,7 +165,7 @@
       ['High / critical events', hi, 'forecast-based crop risk'],
       ['Moderate events', mod, 'developing conditions'],
       ['Official NWS alerts', al.length, `${alHi} high / critical`],
-      ['Monitored counties', L.counties.length, '12 states, 5 crops'],
+      ['Monitored counties', L.counties.length, `${new Set(L.counties.map((c) => c.s)).size} states, ${new Set(L.counties.flatMap((c) => c.c || [])).size} crops`],
       ['Forecast cycle', L.cycle.utc ? new Intl.DateTimeFormat('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(new Date(L.cycle.utc)) : '-', `${L.cycle.ok} ok / ${L.cycle.failed} failed counties`],
     ];
     $('#kpis').innerHTML = k.map(([a, b, c]) => `<div class="kpi"><div class="label">${esc(a)}</div><div class="value">${esc(b)}</div><div class="sub">${esc(c)}</div></div>`).join('');
